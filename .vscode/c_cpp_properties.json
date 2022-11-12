@@ -7,14 +7,17 @@
       },
       "includePath": [
         "/opt/ros/noetic/include/**",
-        "/home/lxj/sentry_ros/src/hardware_interface/include/**",
-        "/usr/include/**"
+        "/home/nobody_knows/catkin_ws/src/beginner_tutorials/include/**",
+        "/home/nobody_knows/catkin_ws/src/learning_topic/include/**",
+        "/usr/include/**",
+        "/home/nobody_knows/catkin_ws/devel/include/**"
       ],
       "name": "ROS",
       "intelliSenseMode": "gcc-x64",
       "compilerPath": "/usr/bin/gcc",
       "cStandard": "gnu11",
-      "cppStandard": "c++14"
+      "cppStandard": "c++14",
+      "compileCommands": "${workspaceFolder}/build/compile_commands.json"
     }
   ],
   "version": 4
