@@ -21,6 +21,13 @@ int main(int argc,char **argv)
         std_msgs::Float32 yaw_angle;
         std_msgs::Float32 pitch_angle;
         std_msgs::Float32 roll_angle;
+        seri_dev.receiveData(data);
+        vx.data = data.chassis_vx.float_d;
+        vy.data = data.chassis_vy.float_d;
+        vw.data = data.chassis_vw.float_d;
+        yaw_angle.data = data.yaw_angle.float_d;
+        pitch_angle.data = data.pitch_angle.float_d;
+        roll_angle.data = data.row_angle.float_d;
         
     }
     

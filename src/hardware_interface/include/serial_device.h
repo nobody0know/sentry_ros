@@ -80,7 +80,7 @@ namespace serial {
         bool init_serial_port();
         int Read(uint8_t *buf,int len);
         int send(const uint8_t *buf,int len);
-        void receiveData(sentry_control &data);
+        void receiveData(sentry_info &data);
         void transformData(const sentry_control &data);
     };
 
