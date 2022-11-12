@@ -7,9 +7,9 @@
       },
       "includePath": [
         "/opt/ros/noetic/include/**",
-        "/home/lxj/sentry_ros/src/hardware_interface/include/**",
+        "./src/hardware_interface/include/**",
         "/usr/include/**",
-        "/home/lxj/sentry_rosdevel/include/**"
+        "./include/**"
       ],
       "name": "ROS",
       "intelliSenseMode": "gcc-x64",
