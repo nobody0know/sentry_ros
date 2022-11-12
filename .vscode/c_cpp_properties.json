@@ -7,10 +7,9 @@
       },
       "includePath": [
         "/opt/ros/noetic/include/**",
-        "/home/nobody_knows/catkin_ws/src/beginner_tutorials/include/**",
-        "/home/nobody_knows/catkin_ws/src/learning_topic/include/**",
+        "/home/lxj/sentry_ros/src/hardware_interface/include/**",
         "/usr/include/**",
-        "/home/nobody_knows/catkin_ws/devel/include/**"
+        "/home/lxj/sentry_rosdevel/include/**"
       ],
       "name": "ROS",
       "intelliSenseMode": "gcc-x64",
