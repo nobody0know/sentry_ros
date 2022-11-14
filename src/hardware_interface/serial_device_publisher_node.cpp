@@ -1,11 +1,9 @@
-#include"serial_device.h"
-#include"ros/ros.h"
-#include "std_msgs/Float32.h"
+#include"serial_device_publisher_node.h"
+sentry_info info_data;
 int main(int argc,char **argv)
 {
     ros::init(argc,argv,"hardware_publisher_node");
     ros::NodeHandle n;
-    sentry_info data;
     serial::serial_device seri_dev("/dev/ttyUSB0",115200);
     ros::Publisher chassis_vx_pub = n.advertise<std_msgs::Float32>("chassis_vx",1000);
     ros::Publisher chassis_vy_pub = n.advertise<std_msgs::Float32>("chassis_vy",1000);
@@ -22,13 +20,13 @@ int main(int argc,char **argv)
         std_msgs::Float32 yaw_angle;
         std_msgs::Float32 pitch_angle;
         std_msgs::Float32 roll_angle;
-        seri_dev.receiveData(data);
-        vx.data = data.chassis_vx.float_d;
-        vy.data = data.chassis_vy.float_d;
-        vw.data = data.chassis_vw.float_d;
-        yaw_angle.data = data.yaw_angle.float_d;
-        pitch_angle.data = data.pitch_angle.float_d;
-        roll_angle.data = data.roll_angle.float_d;
+        seri_dev.receiveData(info_data);
+        vx.data = info_data.chassis_vx.float_d;
+        vy.data = info_data.chassis_vy.float_d;
+        vw.data = info_data.chassis_vw.float_d;
+        yaw_angle.data = info_data.yaw_angle.float_d;
+        pitch_angle.data = info_data.pitch_angle.float_d;
+        roll_angle.data = info_data.roll_angle.float_d;
         chassis_vx_pub.publish(vx);
         chassis_vy_pub.publish(vy);
         chassis_vw_pub.publish(vw);

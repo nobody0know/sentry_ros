@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  geometry_msgs
 )
 
 ## Generate messages in the 'msg' folder
@@ -31,21 +32,36 @@ include_directories(
  )
 
 ## Declare a C++ library
-add_library(serial
-   serial_device_publisher_node.cpp
-   src/CRC_Check.cpp
-   src/serial_device.cpp
-   include/serial_device.h
-   include/CRC_Check.h
-
+add_library(publisher_node
+  serial_device_publisher_node.cpp
+  src/CRC_Check.cpp
+  src/serial_device.cpp
+  include/serial_device.h
+  include/CRC_Check.h
+  include/serial_device_publisher_node.h
+ )
+add_library(subscriber_node
+  serial_device_subscriber_node.cpp
+  src/CRC_Check.cpp
+  src/serial_device.cpp
+  include/serial_device.h
+  include/CRC_Check.h
+  include/serial_device_subscriber_node.h
  )
 
 
- add_executable(${PROJECT_NAME}_node serial_device_publisher_node.cpp)
+ add_executable(serial_device_publisher_node serial_device_publisher_node.cpp)
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(serial_device_publisher_node
   ${catkin_LIBRARIES}
-  serial
+  publisher_node
+)
+
+add_executable(serial_device_subscriber_node serial_device_subscriber_node.cpp)
+
+target_link_libraries(serial_device_subscriber_node
+  ${catkin_LIBRARIES}
+  subscriber_node
 )
 ## Add cmake target dependencies of the executable
 ## same as for the library above
