@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/serial_device.dir/src/serial_device.cpp.o  -o serial_device 

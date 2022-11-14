@@ -1,2 +1,0 @@
-hardware_interface
--DCATKIN_DEVEL_PREFIX=/home/lxj/sentry_ros/devel -DCMAKE_INSTALL_PREFIX=/home/lxj/sentry_ros/install -G Unix Makefiles

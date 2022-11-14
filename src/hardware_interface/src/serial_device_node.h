@@ -2,8 +2,6 @@
 #define SERIAL_DEVICE_NODE_H
 #include<ros/ros.h>
 
-namespace 
-
 
 
 

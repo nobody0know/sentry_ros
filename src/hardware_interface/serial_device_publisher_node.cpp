@@ -1,4 +1,5 @@
 #include"serial_device.h"
+#include"ros/ros.h"
 #include "std_msgs/Float32.h"
 int main(int argc,char **argv)
 {
@@ -27,9 +28,15 @@ int main(int argc,char **argv)
         vw.data = data.chassis_vw.float_d;
         yaw_angle.data = data.yaw_angle.float_d;
         pitch_angle.data = data.pitch_angle.float_d;
-        roll_angle.data = data.row_angle.float_d;
-        
+        roll_angle.data = data.roll_angle.float_d;
+        chassis_vx_pub.publish(vx);
+        chassis_vy_pub.publish(vy);
+        chassis_vw_pub.publish(vw);
+        gimbal_yaw_pub.publish(yaw_angle);
+        gimbal_pitch_pub.publish(pitch_angle);
+        gimbal_roll_pub.publish(roll_angle);
+        ros::spinOnce();
+        loop_rate.sleep();
     }
-    
-
+    return 0;
 }
