@@ -1,0 +1,17 @@
+<launch>
+
+    <node name="lsn10" pkg="lsn10" type="lsn10" output="screen" >
+        <param name="scan_topic" value="scan"/>           #设置激光数据topic名称
+        <param name="frame_id" value="laser"/>       #激光坐标
+        <param name="serial_port" value="/dev/ttyUSB0"/>  #雷达连接的串口
+        <param name="baud_rate" value="230400" />         #雷达连接的串口波特率
+
+        <!-- 镭神雷达参数 -->
+        <param name="truncated_mode" value="0"/>    <!--0:不使用过滤 1:使用过滤-->
+        <rosparam param="disable_min">[0,90,180,270]</rosparam> <!--需要过滤(屏蔽)的角度初始值，允许多角度过滤-->
+        <rosparam param="disable_max">[45,135,225,315]</rosparam> <!--需要过滤(屏蔽)的角度结束值，允许多角度过滤-->
+        <!-- 镭神雷达参数 -->
+        
+    </node>
+
+</launch>

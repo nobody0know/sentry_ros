@@ -1,0 +1,8 @@
+<launch>
+
+    <include file="$(find sentry_navigation)/launch/gmapping.launch"/>
+
+    <!-- 启动rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sentry_navigation)/rviz/gmapping.rviz"/>
+
+</launch>
