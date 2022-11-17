@@ -51,6 +51,8 @@ typedef struct
 
 typedef struct
 {
+    float_char sentry_id;
+    float_char shoot_speed;
     float_char yaw_angle;
     float_char pitch_angle;
     float_char roll_angle;

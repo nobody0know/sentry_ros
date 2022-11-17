@@ -10,6 +10,8 @@ project(sentry_navigation)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   move_base_msgs
+  nav_msg
+  tf
   roscpp
   rospy
   std_msgs
@@ -109,6 +111,7 @@ catkin_package(
 #  LIBRARIES sentry_navigation
 #  CATKIN_DEPENDS geometry_msgs move_base_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
+CATKIN_DEPENDS roscpp rospy std_msg geometry_msgs move_base_msgs nav_msg tf
 )
 
 ###########
@@ -118,15 +121,22 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/sentry_navigation.cpp
-# )
+add_library(odom
+  src/chassis_odom.cpp
+  include/chassis_odom.h
+)
 
+add_executable(chassis_odom chassis_odom.cpp)
+
+target_link_libraries(chassis_odom
+  ${catkin_LIBRARIES}
+  odom
+)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure

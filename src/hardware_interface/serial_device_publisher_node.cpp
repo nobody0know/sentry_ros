@@ -11,7 +11,7 @@ int main(int argc,char **argv)
     ros::Publisher gimbal_yaw_pub = n.advertise<std_msgs::Float32>("gimbal_yaw_angle",1000);
     ros::Publisher gimbal_pitch_pub = n.advertise<std_msgs::Float32>("gimbal_pitch_angle",1000);
     ros::Publisher gimbal_roll_pub = n.advertise<std_msgs::Float32>("gimbal_roll_angle",1000);
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(1);
     while (ros::ok())
     {
         std_msgs::Float32 vx;

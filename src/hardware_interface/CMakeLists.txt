@@ -50,7 +50,7 @@ add_library(subscriber_node
  )
 
 
- add_executable(serial_device_publisher_node serial_device_publisher_node.cpp)
+add_executable(serial_device_publisher_node serial_device_publisher_node.cpp)
 
 target_link_libraries(serial_device_publisher_node
   ${catkin_LIBRARIES}

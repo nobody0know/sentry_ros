@@ -1,7 +1,4 @@
-//
 // Created by lxj on 22-11-6.
-//
-
 #include "../include/serial_device.h"
 #define USING_COMMEND_LINE 0
 namespace serial {
@@ -15,17 +12,17 @@ namespace serial {
     }
 
     bool serial_device::init_serial_port() {
-        // ROS_INFO("open device %s with baudrate %d",port_name_,baud_rate_);
+        ROS_INFO("open device %s with baudrate %d",port_name_,baud_rate_);
         if (port_name_.c_str() == nullptr){
             port_name_ = "/dev/ttyUSB0";
         }
         if (open_device() && config_device()){
             FD_ZERO(&serial_fd_set_);
             FD_SET(serial_fd_,&serial_fd_set_);
-            // ROS_INFO("serial started successfully");
+            ROS_INFO("serial started successfully");
             return true;
         } else {
-            // ROS_ERROR("failed to start serial %s",port_name_);
+            ROS_ERROR("failed to start serial %s",port_name_);
             close_device();
             return false;
         }
@@ -40,7 +37,7 @@ namespace serial {
         serial_fd_= open(port_name_.c_str(), O_RDWR | O_NOCTTY);
 #endif
         if (serial_fd_ < 0) {
-            // ROS_ERROR("cannot open device %d %d",serial_fd_,port_name_);
+            ROS_ERROR("cannot open device %d %s",serial_fd_,port_name_);
             return false;
         }
         return true;
@@ -60,7 +57,7 @@ namespace serial {
         int i, j;
         /* save current port parameter */
         if (tcgetattr(serial_fd_, &old_termios_) != 0) {
-            // ROS_ERROR("fail to save current port");
+            ROS_ERROR("fail to save current port");
             return false;
         }
         memset(&new_termios_, 0, sizeof(new_termios_));
@@ -140,7 +137,7 @@ namespace serial {
 
         /* activite the configuration */
         if ((tcsetattr(serial_fd_, TCSANOW, &new_termios_)) != 0) {
-            // ROS_ERROR("failed to activate serial configuration");
+            ROS_ERROR("failed to activate serial configuration");
             return false;
         }
         return true;
@@ -156,13 +153,13 @@ namespace serial {
             return -1;
           } else {
             ret = read(serial_fd_, buf, len);
-                // ROS_INFO("Read once length: %d",ret);
+                ROS_INFO("Read once length: %d",ret);
             while (ret == 0) {
-                // ROS_WARN("Connection closed, try to reconnect");
+                ROS_WARN("Connection closed, try to reconnect");
               while (!init_serial_port()) {
                 usleep(500000);
               }
-                // ROS_INFO("Reconnect Success");
+                ROS_INFO("Reconnect Success");
               ret = read(serial_fd_, buf, len);
             }
             return ret;
@@ -220,44 +217,53 @@ namespace serial {
 #if USING_COMMEND_LINE
         int byte = read(serial_fd_,read_row_data,80);
 #else 
-        int byte = read(serial_fd_,read_row_data,44);
+        int byte = read(serial_fd_,read_row_data,66);
 
-        for (int i = 0; i < 44; i++)
+        for (int i = 0; i < 66; i++)
         {
             if (read_row_data[i]==0xA5)
             {
                 if (Verify_CRC8_Check_Sum(read_row_data+i,2));
                 {
-                    if(Verify_CRC16_Check_Sum(read_row_data+i,28))
-                    data.chassis_vx.char_d[0] = read_row_data[2+i];
-                    data.chassis_vx.char_d[1] = read_row_data[3+i];
-                    data.chassis_vx.char_d[2] = read_row_data[4+i];
-                    data.chassis_vx.char_d[3] = read_row_data[5+i];
+                    if(Verify_CRC16_Check_Sum(read_row_data+i,33))
+                    {
+                        data.yaw_angle.char_d[0] = read_row_data[2+i];
+                        data.yaw_angle.char_d[1] = read_row_data[3+i];
+                        data.yaw_angle.char_d[2] = read_row_data[4+i];
+                        data.yaw_angle.char_d[3] = read_row_data[5+i];
 
-                    data.chassis_vy.char_d[0] = read_row_data[6+i];
-                    data.chassis_vy.char_d[1] = read_row_data[7+i];
-                    data.chassis_vy.char_d[2] = read_row_data[8+i];
-                    data.chassis_vy.char_d[3] = read_row_data[9+i];
+                        data.pitch_angle.char_d[0] = read_row_data[6+i];
+                        data.pitch_angle.char_d[1] = read_row_data[7+i];
+                        data.pitch_angle.char_d[2] = read_row_data[8+i];
+                        data.pitch_angle.char_d[3] = read_row_data[9+i];
 
-                    data.chassis_vw.char_d[0] = read_row_data[10+i];
-                    data.chassis_vw.char_d[1] = read_row_data[11+i];
-                    data.chassis_vw.char_d[2] = read_row_data[12+i];
-                    data.chassis_vw.char_d[3] = read_row_data[13+i];
+                        data.roll_angle.char_d[0] = read_row_data[10+i];
+                        data.roll_angle.char_d[1] = read_row_data[11+i];
+                        data.roll_angle.char_d[2] = read_row_data[12+i];
+                        data.roll_angle.char_d[3] = read_row_data[13+i];
 
-                    data.yaw_angle.char_d[0] = read_row_data[14+i];
-                    data.yaw_angle.char_d[1] = read_row_data[15+i];
-                    data.yaw_angle.char_d[2] = read_row_data[16+i];
-                    data.yaw_angle.char_d[3] = read_row_data[17+i];
+                        data.shoot_speed.char_d[0] = read_row_data[14+i];
+                        data.shoot_speed.char_d[1] = read_row_data[15+i];
+                        data.shoot_speed.char_d[2] = read_row_data[16+i];
+                        data.shoot_speed.char_d[3] = read_row_data[17+i];
 
-                    data.pitch_angle.char_d[0] = read_row_data[18+i];
-                    data.pitch_angle.char_d[1] = read_row_data[19+i];
-                    data.pitch_angle.char_d[2] = read_row_data[20+i];
-                    data.pitch_angle.char_d[3] = read_row_data[21+i];
-                    
-                    data.roll_angle.char_d[0] = read_row_data[22+i];
-                    data.roll_angle.char_d[1] = read_row_data[23+i];
-                    data.roll_angle.char_d[2] = read_row_data[24+i];
-                    data.roll_angle.char_d[3] = read_row_data[25+i];
+                        data.chassis_vx.char_d[0] = read_row_data[18+i];
+                        data.chassis_vx.char_d[1] = read_row_data[19+i];
+                        data.chassis_vx.char_d[2] = read_row_data[20+i];
+                        data.chassis_vx.char_d[3] = read_row_data[21+i];
+                        
+                        data.chassis_vy.char_d[0] = read_row_data[22+i];
+                        data.chassis_vy.char_d[1] = read_row_data[23+i];
+                        data.chassis_vy.char_d[2] = read_row_data[24+i];
+                        data.chassis_vy.char_d[3] = read_row_data[25+i];
+
+                        data.chassis_vw.char_d[0] = read_row_data[26+i];
+                        data.chassis_vw.char_d[1] = read_row_data[27+i];
+                        data.chassis_vw.char_d[2] = read_row_data[28+i];
+                        data.chassis_vw.char_d[3] = read_row_data[29+i];
+
+                        data.sentry_id.char_d[0] = read_row_data[30+i];
+                    }
                 }
                 
             }
