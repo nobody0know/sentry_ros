@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <cstring>
 #include "CRC_Check.h"
+#include "filter.h"
 #include <ros/ros.h>
 using namespace std;
 

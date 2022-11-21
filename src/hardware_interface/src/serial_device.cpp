@@ -231,12 +231,14 @@ namespace serial {
                         data.yaw_angle.char_d[1] = read_row_data[3+i];
                         data.yaw_angle.char_d[2] = read_row_data[4+i];
                         data.yaw_angle.char_d[3] = read_row_data[5+i];
+                        data.yaw_angle.float_d = Data_filter(data.yaw_angle.float_d);
                         ROS_INFO("yaw_angle %f\n",data.yaw_angle.float_d);
 
                         data.pitch_angle.char_d[0] = read_row_data[6+i];
                         data.pitch_angle.char_d[1] = read_row_data[7+i];
                         data.pitch_angle.char_d[2] = read_row_data[8+i];
                         data.pitch_angle.char_d[3] = read_row_data[9+i];
+                        data.pitch_angle.float_d = Data_filter(data.pitch_angle.float_d);
 
                         data.roll_angle.char_d[0] = read_row_data[10+i];
                         data.roll_angle.char_d[1] = read_row_data[11+i];
