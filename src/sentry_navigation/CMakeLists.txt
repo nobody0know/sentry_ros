@@ -10,7 +10,7 @@ project(sentry_navigation)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   move_base_msgs
-  nav_msg
+  nav_msgs
   tf
   roscpp
   rospy
@@ -111,7 +111,7 @@ catkin_package(
 #  LIBRARIES sentry_navigation
 #  CATKIN_DEPENDS geometry_msgs move_base_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
-CATKIN_DEPENDS roscpp rospy std_msg geometry_msgs move_base_msgs nav_msg tf
+CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs move_base_msgs nav_msgs tf
 )
 
 ###########
@@ -131,7 +131,7 @@ add_library(odom
   include/chassis_odom.h
 )
 
-add_executable(chassis_odom chassis_odom.cpp)
+add_executable(chassis_odom src/chassis_odom.cpp)
 
 target_link_libraries(chassis_odom
   ${catkin_LIBRARIES}

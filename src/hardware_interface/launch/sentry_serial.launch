@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="hardware_interface" type="serial_device_publisher_node" name="serial_device_pub_node"/>
+
+    <node pkg="hardware_interface" type="serial_device_subscriber_node" name="serial_device_sub_node"/>
+</launch>
