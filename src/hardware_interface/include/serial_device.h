@@ -72,6 +72,7 @@ namespace serial {
         string port_name_;
         fd_set serial_fd_set_;
         struct termios new_termios_, old_termios_;
+        first_order_filter_type_t yaw_row_data_filter;
         unsigned char read_row_data[255];
         unsigned char transform_data[30];//要发送出去的数据
         bool config_device();

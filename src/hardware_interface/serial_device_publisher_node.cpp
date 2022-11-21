@@ -4,6 +4,7 @@ int main(int argc,char **argv)
 {
     ros::init(argc,argv,"hardware_publisher_node");
     ros::NodeHandle n;
+    first_order_filter_type_t yaw_data_filter;
     serial::serial_device seri_dev("/dev/ttyUSB0",115200);
     ros::Publisher chassis_vx_pub = n.advertise<std_msgs::Float32>("chassis_vx",10);
     ros::Publisher chassis_vy_pub = n.advertise<std_msgs::Float32>("chassis_vy",10);
@@ -11,6 +12,7 @@ int main(int argc,char **argv)
     ros::Publisher gimbal_yaw_pub = n.advertise<std_msgs::Float32>("gimbal_yaw_angle",10);
     ros::Publisher gimbal_pitch_pub = n.advertise<std_msgs::Float32>("gimbal_pitch_angle",10);
     ros::Publisher gimbal_roll_pub = n.advertise<std_msgs::Float32>("gimbal_roll_angle",10);
+    first_order_filter_init(&yaw_data_filter,0.5,100);
     ros::Rate loop_rate(10);
     while (ros::ok())
     {
@@ -25,6 +27,7 @@ int main(int argc,char **argv)
         vy.data = info_data.chassis_vy.float_d;
         vw.data = info_data.chassis_vw.float_d;
         yaw_angle.data = info_data.yaw_angle.float_d;
+        first_order_filter_cali(&yaw_data_filter,yaw_angle.data);
         pitch_angle.data = info_data.pitch_angle.float_d;
         roll_angle.data = info_data.roll_angle.float_d;
         if (vx.data<180&&vx.data>-180&&(vx.data>0.1||vx.data<-0.1))
@@ -39,9 +42,11 @@ int main(int argc,char **argv)
         {
             chassis_vw_pub.publish(vw);
         }
-        if (yaw_angle.data<180&&yaw_angle.data>-180&&(yaw_angle.data>0.1||yaw_angle.data<-0.1))
+        if (yaw_angle.data<180&&yaw_angle.data>-180)
         {
-            gimbal_yaw_pub.publish(yaw_angle);
+            if(yaw_angle.data>0.1||yaw_angle.data<-0.1){
+                gimbal_yaw_pub.publish(yaw_angle);
+            }
         }
         if (pitch_angle.data<180&&pitch_angle.data>-180&&(pitch_angle.data>0.1||pitch_angle.data<-0.1))
         {

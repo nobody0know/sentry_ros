@@ -39,6 +39,8 @@ add_library(publisher_node
   include/serial_device.h
   include/CRC_Check.h
   include/serial_device_publisher_node.h
+  src/filter.cpp
+  include/filter.h
  )
 add_library(subscriber_node
   serial_device_subscriber_node.cpp
@@ -47,14 +49,8 @@ add_library(subscriber_node
   include/serial_device.h
   include/CRC_Check.h
   include/serial_device_subscriber_node.h
- )
-add_library(filter
-  src/filter.c
-  src/user_lib.c
-  src/ramp.c
+  src/filter.cpp
   include/filter.h
-  include/ramp.h
-  include/user_lib.h
  )
 
 
