@@ -217,20 +217,21 @@ namespace serial {
 #if USING_COMMEND_LINE
         int byte = read(serial_fd_,read_row_data,80);
 #else 
-        int byte = read(serial_fd_,read_row_data,66);
+        int byte = read(serial_fd_,read_row_data,31);
 
-        for (int i = 0; i < 66; i++)
+        for (int i = 0; i < 31; i++)
         {
             if (read_row_data[i]==0xA5)
             {
                 if (Verify_CRC8_Check_Sum(read_row_data+i,2));
                 {
-                    if(Verify_CRC16_Check_Sum(read_row_data+i,33))
+                    if(1)//Verify_CRC16_Check_Sum(read_row_data+i,33))
                     {
                         data.yaw_angle.char_d[0] = read_row_data[2+i];
                         data.yaw_angle.char_d[1] = read_row_data[3+i];
                         data.yaw_angle.char_d[2] = read_row_data[4+i];
                         data.yaw_angle.char_d[3] = read_row_data[5+i];
+                        ROS_INFO("yaw_angle %f\n",data.yaw_angle.float_d);
 
                         data.pitch_angle.char_d[0] = read_row_data[6+i];
                         data.pitch_angle.char_d[1] = read_row_data[7+i];
