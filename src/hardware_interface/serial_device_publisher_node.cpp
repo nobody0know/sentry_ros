@@ -27,15 +27,30 @@ int main(int argc,char **argv)
         yaw_angle.data = info_data.yaw_angle.float_d;
         pitch_angle.data = info_data.pitch_angle.float_d;
         roll_angle.data = info_data.roll_angle.float_d;
-        chassis_vx_pub.publish(vx);
-        chassis_vy_pub.publish(vy);
-        chassis_vw_pub.publish(vw);
+        if (vx.data<180&&vx.data>-180&&(vx.data>0.1||vx.data<-0.1))
+        {
+            chassis_vx_pub.publish(vx);
+        }
+        if (vy.data<180&&vy.data>-180&&(vy.data>0.1||vy.data<-0.1))
+        {
+            chassis_vy_pub.publish(vy);
+        }
+        if (vw.data<180&&vw.data>-180&&(vw.data>0.1||vw.data<-0.1))
+        {
+            chassis_vw_pub.publish(vw);
+        }
         if (yaw_angle.data<180&&yaw_angle.data>-180&&(yaw_angle.data>0.1||yaw_angle.data<-0.1))
         {
             gimbal_yaw_pub.publish(yaw_angle);
         }
-        gimbal_pitch_pub.publish(pitch_angle);
-        gimbal_roll_pub.publish(roll_angle);
+        if (pitch_angle.data<180&&pitch_angle.data>-180&&(pitch_angle.data>0.1||pitch_angle.data<-0.1))
+        {
+            gimbal_pitch_pub.publish(pitch_angle);
+        }
+        if (roll_angle.data<180&&roll_angle.data>-180&&(roll_angle.data>0.1||roll_angle.data<-0.1))
+        {
+            gimbal_roll_pub.publish(roll_angle);
+        }
         ros::spinOnce();
     }
     return 0;

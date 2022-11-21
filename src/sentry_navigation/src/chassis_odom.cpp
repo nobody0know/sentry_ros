@@ -43,17 +43,17 @@ void publish_odom(odom::chassis_odom &chassis_odom)
     chassis_odom.last_time = chassis_odom.current_time;
 }
 
-void vx_Callback(const std_msgs::Float32 &vx)
+void vx_Callback(const std_msgs::Float32 vx)
 {
     chassis_odom.vx = vx.data;
 }
 
-void vy_Callback(const std_msgs::Float32 &vy)
+void vy_Callback(const std_msgs::Float32 vy)
 {
     chassis_odom.vy = vy.data;
 }
 
-void vw_Callback(const std_msgs::Float32 &vw)
+void vw_Callback(const std_msgs::Float32 vw)
 {
     chassis_odom.vw = vw.data;
 }

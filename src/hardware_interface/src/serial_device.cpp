@@ -225,18 +225,19 @@ namespace serial {
             {
                 if (Verify_CRC8_Check_Sum(read_row_data+i,2));
                 {
-                    if(1)//Verify_CRC16_Check_Sum(read_row_data+i,33))
+                    // if(Verify_CRC8_Check_Sum(read_row_data+i,32))
                     {
                         data.yaw_angle.char_d[0] = read_row_data[2+i];
                         data.yaw_angle.char_d[1] = read_row_data[3+i];
                         data.yaw_angle.char_d[2] = read_row_data[4+i];
                         data.yaw_angle.char_d[3] = read_row_data[5+i];
-                        ROS_INFO("yaw_angle %f\n",data.yaw_angle.float_d);
+                        // ROS_INFO("yaw_angle %f\n",data.yaw_angle.float_d);
 
                         data.pitch_angle.char_d[0] = read_row_data[6+i];
                         data.pitch_angle.char_d[1] = read_row_data[7+i];
                         data.pitch_angle.char_d[2] = read_row_data[8+i];
                         data.pitch_angle.char_d[3] = read_row_data[9+i];
+                        // ROS_INFO("pitch_angle %f\n",data.pitch_angle.float_d);
 
                         data.roll_angle.char_d[0] = read_row_data[10+i];
                         data.roll_angle.char_d[1] = read_row_data[11+i];
