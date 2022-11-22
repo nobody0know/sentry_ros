@@ -3,7 +3,7 @@
 #include<ros/ros.h>
 #include"serial_device.h"
 #include "std_msgs/Float32.h"
-
+#include "std_msgs/Int16.h"
 
 
 
