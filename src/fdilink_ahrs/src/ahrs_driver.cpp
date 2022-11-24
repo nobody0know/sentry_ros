@@ -421,9 +421,15 @@ void ahrsBringup::processLoop()
         imu_data.orientation.x = ahrs_frame_.frame.data.data_pack.Qx;
         imu_data.orientation.y = ahrs_frame_.frame.data.data_pack.Qy;
         imu_data.orientation.z = ahrs_frame_.frame.data.data_pack.Qz;
+        imu_data.orientation_covariance[0] = 1e6; //Three-axis attitude covariance matrix //三轴姿态协方差矩阵
+        imu_data.orientation_covariance[4] = 1e6;
+        imu_data.orientation_covariance[8] = 1e-6;
         imu_data.angular_velocity.x = ahrs_frame_.frame.data.data_pack.RollSpeed;
         imu_data.angular_velocity.y = ahrs_frame_.frame.data.data_pack.PitchSpeed;
         imu_data.angular_velocity.z = ahrs_frame_.frame.data.data_pack.HeadingSpeed;
+        imu_data.angular_velocity_covariance[0] = 1e6; //Triaxial angular velocity covariance matrix //三轴角速度协方差矩阵
+        imu_data.angular_velocity_covariance[4] = 1e6;
+        imu_data.angular_velocity_covariance[8] = 1e-6;
         imu_data.linear_acceleration.x = imu_frame_.frame.data.data_pack.accelerometer_x;
         imu_data.linear_acceleration.y = imu_frame_.frame.data.data_pack.accelerometer_y;
         imu_data.linear_acceleration.z = imu_frame_.frame.data.data_pack.accelerometer_z;

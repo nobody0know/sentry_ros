@@ -50,31 +50,42 @@ namespace odom{
         chassis_odom.z_pos += delta_th;
         
         geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom.vw);
-        geometry_msgs::TransformStamped odom_trans;
-        odom_trans.header.stamp = current_time;
-        odom_trans.header.frame_id = "odom";
-        odom_trans.child_frame_id = "base_link";
+        // geometry_msgs::TransformStamped odom_trans;
+        // odom_trans.header.stamp = current_time;
+        // odom_trans.header.frame_id = "odom";
+        // odom_trans.child_frame_id = "base_link";
 
-        odom_trans.transform.translation.x = chassis_odom.x_pos;
-        odom_trans.transform.translation.y = chassis_odom.y_pos;
-        odom_trans.transform.translation.z = 0.0;
-        odom_trans.transform.rotation = odom_quat;
+        // odom_trans.transform.translation.x = chassis_odom.x_pos;
+        // odom_trans.transform.translation.y = chassis_odom.y_pos;
+        // odom_trans.transform.translation.z = 0.0;
+        // odom_trans.transform.rotation = odom_quat;
 
-        odom_broadcaster.sendTransform(odom_trans);
+        // odom_broadcaster.sendTransform(odom_trans);
 
         odom.header.stamp = current_time;
-        odom.header.frame_id = "odom";
+        odom.header.frame_id = "odom_combined";
 
         odom.pose.pose.orientation.x = chassis_odom.x_pos;
         odom.pose.pose.orientation.y = chassis_odom.y_pos;
         odom.pose.pose.orientation.z = 0.0;
         odom.pose.pose.orientation = odom_quat;
         
-        odom.child_frame_id = "base_link";
+        odom.child_frame_id = "base_footprint";
         odom.twist.twist.linear.x = chassis_odom.vx;
         odom.twist.twist.linear.y = chassis_odom.vy;
         odom.twist.twist.angular.z = chassis_odom.vw;
-
+        if(chassis_odom.vx== 0&&chassis_odom.vy== 0&&chassis_odom.vw== 0)
+        {
+            //如果velocity是零，说明编码器的误差会比较小，认为编码器数据更可靠
+            memcpy(&odom.pose.covariance, odom_pose_covariance2, sizeof(odom_pose_covariance2)),
+            memcpy(&odom.twist.covariance, odom_twist_covariance2, sizeof(odom_twist_covariance2));
+        }
+        else
+        {
+            //如果小车velocity非零，考虑到运动中编码器可能带来的滑动误差，认为imu的数据更可靠
+            memcpy(&odom.pose.covariance, odom_pose_covariance, sizeof(odom_pose_covariance)),
+            memcpy(&odom.twist.covariance, odom_twist_covariance, sizeof(odom_twist_covariance));       
+        }
         odom_pub.publish(odom);
         last_time = current_time;
     }

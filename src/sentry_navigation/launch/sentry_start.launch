@@ -11,5 +11,7 @@
     <include file="$(find robot_pose_ekf)/robot_pose_ekf.launch">
 
     </include>
-
+    
+    <node pkg="tf" type="static_transform_publisher" name="imu_to_footprint" args="0 0 0 0 0 0 base_footprint gyro_link 100" />
+  
 </launch>
