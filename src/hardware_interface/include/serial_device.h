@@ -48,6 +48,7 @@ typedef struct
    float_char chassis_vx;
    float_char chassis_vy;
    float_char chassis_vw;
+   bool fire_control;
 }sentry_control;
 
 typedef struct
@@ -85,7 +86,7 @@ namespace serial {
         int Read(uint8_t *buf,int len);
         int send(const uint8_t *buf,int len);
         void receiveData(sentry_info &data);
-        void transformData(const sentry_control &data);
+        void transformData(const sentry_control &data,int mode);
     };
 
 } // serial

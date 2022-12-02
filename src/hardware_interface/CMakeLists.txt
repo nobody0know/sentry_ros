@@ -32,41 +32,24 @@ include_directories(
  )
 
 ## Declare a C++ library
-add_library(publisher_node
-  serial_device_publisher_node.cpp
+add_library(serial_node
+  serial_device_node.cpp
   src/CRC_Check.cpp
   src/serial_device.cpp
   include/serial_device.h
   include/CRC_Check.h
-  include/serial_device_publisher_node.h
-  src/filter.cpp
-  include/filter.h
- )
-add_library(subscriber_node
-  serial_device_subscriber_node.cpp
-  src/CRC_Check.cpp
-  src/serial_device.cpp
-  include/serial_device.h
-  include/CRC_Check.h
-  include/serial_device_subscriber_node.h
+  include/serial_device_node.h
   src/filter.cpp
   include/filter.h
  )
 
+add_executable(serial_device_node serial_device_node.cpp)
 
-add_executable(serial_device_publisher_node serial_device_publisher_node.cpp)
-
-target_link_libraries(serial_device_publisher_node
+target_link_libraries(serial_device_node
   ${catkin_LIBRARIES}
-  publisher_node
+  serial_node
 )
 
-add_executable(serial_device_subscriber_node serial_device_subscriber_node.cpp)
-
-target_link_libraries(serial_device_subscriber_node
-  ${catkin_LIBRARIES}
-  subscriber_node
-)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${PROJECT_NAME}_generate_messages_cpp)

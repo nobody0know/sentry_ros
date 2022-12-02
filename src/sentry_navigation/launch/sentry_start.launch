@@ -12,6 +12,6 @@
 
     </include>
     
-    <node pkg="tf" type="static_transform_publisher" name="imu_to_footprint" args="0 0 0 0 0 0 base_footprint gyro_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="footprint_to_grto" args="0 0 0 0 0 0 base_footprint gyro_link 100" />
   
 </launch>

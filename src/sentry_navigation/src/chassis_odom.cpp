@@ -48,19 +48,8 @@ namespace odom{
         chassis_odom.x_pos += delta_x;
         chassis_odom.y_pos += delta_y;
         chassis_odom.z_pos += delta_th;
-        
+//      因为里程计使用麦轮解算得到,无需里程计到base_footprint的tf变换,直接从融合算法ekf发布tf变换即可    
         geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom.vw);
-        // geometry_msgs::TransformStamped odom_trans;
-        // odom_trans.header.stamp = current_time;
-        // odom_trans.header.frame_id = "odom";
-        // odom_trans.child_frame_id = "base_link";
-
-        // odom_trans.transform.translation.x = chassis_odom.x_pos;
-        // odom_trans.transform.translation.y = chassis_odom.y_pos;
-        // odom_trans.transform.translation.z = 0.0;
-        // odom_trans.transform.rotation = odom_quat;
-
-        // odom_broadcaster.sendTransform(odom_trans);
 
         odom.header.stamp = current_time;
         odom.header.frame_id = "odom_combined";

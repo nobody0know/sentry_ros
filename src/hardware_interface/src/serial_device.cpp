@@ -166,7 +166,10 @@ namespace serial {
           }
     }
 
-    void serial_device::transformData(const sentry_control &data) {
+    /// @brief transformData function
+    /// @param data struct of sentry_contry data you want to send
+    /// @param mode  1 is gimbal;0 is chassis choose send chassis data or gimbal data
+    void serial_device::transformData(const sentry_control &data,int mode) {
 #if USING_COMMEND_LINE
         char buffer[255];
         buffer[0] = 0xA5;
@@ -178,40 +181,58 @@ namespace serial {
         write(serial_fd_,buffer, strlen(buffer)+1);
         memset(buffer,0,sizeof(buffer));
 #else
-        unsigned char buffer[42];
+    if(mode == 0)
+    {
+        unsigned char buffer[15];
+        memset(buffer,0,sizeof(buffer));
         buffer[0] = 0xA5;
-        Append_CRC8_Check_Sum(buffer,2);
-        buffer[2] = data.yaw_angle.char_d[0];
-        buffer[3] = data.yaw_angle.char_d[1];
-        buffer[4] = data.yaw_angle.char_d[2];
-        buffer[5] = data.yaw_angle.char_d[3];
+
+        buffer[1] = data.yaw_angle.char_d[0];
+        buffer[2] = data.yaw_angle.char_d[1];
+        buffer[3] = data.yaw_angle.char_d[2];
+        buffer[4] = data.yaw_angle.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[1],5);//5
 
         buffer[6] = data.pitch_angle.char_d[0];
         buffer[7] = data.pitch_angle.char_d[1];
         buffer[8] = data.pitch_angle.char_d[2];
         buffer[9] = data.pitch_angle.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[6],5);//10
 
-        buffer[10] = data.chassis_vx.char_d[0];
-        buffer[11] = data.chassis_vx.char_d[1];
-        buffer[12] = data.chassis_vx.char_d[2];
-        buffer[13] = data.chassis_vx.char_d[3];
+        buffer[11] = data.fire_control;
 
-        buffer[14] = data.chassis_vy.char_d[0];
-        buffer[15] = data.chassis_vy.char_d[1];
-        buffer[16] = data.chassis_vy.char_d[2];
-        buffer[17] = data.chassis_vy.char_d[3];
-
-        buffer[18] = data.chassis_vw.char_d[0];
-        buffer[19] = data.chassis_vw.char_d[1];
-        buffer[20] = data.chassis_vw.char_d[2];
-        buffer[21] = data.chassis_vw.char_d[3];
-
-        Append_CRC16_Check_Sum(buffer,24);
-        write(serial_fd_,buffer, 24);
+        write(serial_fd_,buffer, 12);
+    }
+    else if(mode == 1)
+    {
+        unsigned char buffer[20];
         memset(buffer,0,sizeof(buffer));
+        buffer[0] = 0xA6;
+
+        buffer[1] = data.chassis_vx.char_d[0];
+        buffer[2] = data.chassis_vx.char_d[1];
+        buffer[3] = data.chassis_vx.char_d[2];
+        buffer[4] = data.chassis_vx.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[1],5);//5
+
+        buffer[6] = data.chassis_vy.char_d[0];
+        buffer[7] = data.chassis_vy.char_d[1];
+        buffer[8] = data.chassis_vy.char_d[2];
+        buffer[9] = data.chassis_vy.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[6],5);//10
+
+        buffer[11] = data.chassis_vw.char_d[0];
+        buffer[12] = data.chassis_vw.char_d[1];
+        buffer[13] = data.chassis_vw.char_d[2];
+        buffer[14] = data.chassis_vw.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[11],5);//15
+
+        write(serial_fd_,buffer, 16);
+    }
 
 #endif
     }
+
     void serial_device::receiveData(sentry_info &data) 
     {
 #if USING_COMMEND_LINE
