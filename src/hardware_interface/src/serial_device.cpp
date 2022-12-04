@@ -8,7 +8,6 @@ namespace serial {
     data_bits_(8),
     parity_bits_('N'),
     stop_bits_(1){
-        init_serial_port();
     }
 
     bool serial_device::init_serial_port() {
@@ -169,7 +168,7 @@ namespace serial {
     /// @brief transformData function
     /// @param data struct of sentry_contry data you want to send
     /// @param mode  1 is gimbal;0 is chassis choose send chassis data or gimbal data
-    void serial_device::transformData(const sentry_control &data,int mode) {
+    void serial_device::transformData(const sentry_control &data) {
 #if USING_COMMEND_LINE
         char buffer[255];
         buffer[0] = 0xA5;
@@ -181,9 +180,8 @@ namespace serial {
         write(serial_fd_,buffer, strlen(buffer)+1);
         memset(buffer,0,sizeof(buffer));
 #else
-    if(mode == 0)
-    {
-        unsigned char buffer[15];
+        // ROS_INFO("gimbal control send! %f\n",data.yaw_angle.float_d);
+        unsigned char buffer[30];
         memset(buffer,0,sizeof(buffer));
         buffer[0] = 0xA5;
 
@@ -201,34 +199,25 @@ namespace serial {
 
         buffer[11] = data.fire_control;
 
-        write(serial_fd_,buffer, 12);
-    }
-    else if(mode == 1)
-    {
-        unsigned char buffer[20];
-        memset(buffer,0,sizeof(buffer));
-        buffer[0] = 0xA6;
+        buffer[12] = data.chassis_vx.char_d[0];
+        buffer[13] = data.chassis_vx.char_d[1];
+        buffer[14] = data.chassis_vx.char_d[2];
+        buffer[15] = data.chassis_vx.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[12],5);//16
 
-        buffer[1] = data.chassis_vx.char_d[0];
-        buffer[2] = data.chassis_vx.char_d[1];
-        buffer[3] = data.chassis_vx.char_d[2];
-        buffer[4] = data.chassis_vx.char_d[3];
-        Append_CRC8_Check_Sum(&buffer[1],5);//5
+        buffer[17] = data.chassis_vy.char_d[0];
+        buffer[18] = data.chassis_vy.char_d[1];
+        buffer[19] = data.chassis_vy.char_d[2];
+        buffer[20] = data.chassis_vy.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[17],5);//21
 
-        buffer[6] = data.chassis_vy.char_d[0];
-        buffer[7] = data.chassis_vy.char_d[1];
-        buffer[8] = data.chassis_vy.char_d[2];
-        buffer[9] = data.chassis_vy.char_d[3];
-        Append_CRC8_Check_Sum(&buffer[6],5);//10
+        buffer[22] = data.chassis_vw.char_d[0];
+        buffer[23] = data.chassis_vw.char_d[1];
+        buffer[24] = data.chassis_vw.char_d[2];
+        buffer[25] = data.chassis_vw.char_d[3];
+        Append_CRC8_Check_Sum(&buffer[22],5);//26
 
-        buffer[11] = data.chassis_vw.char_d[0];
-        buffer[12] = data.chassis_vw.char_d[1];
-        buffer[13] = data.chassis_vw.char_d[2];
-        buffer[14] = data.chassis_vw.char_d[3];
-        Append_CRC8_Check_Sum(&buffer[11],5);//15
-
-        write(serial_fd_,buffer, 16);
-    }
+        write(serial_fd_,buffer, 26);
 
 #endif
     }
@@ -238,74 +227,8 @@ namespace serial {
 #if USING_COMMEND_LINE
         int byte = read(serial_fd_,read_row_data,80);
 #else 
-        int byte = read(serial_fd_,read_row_data,23);
+        int byte = read(serial_fd_,read_row_data,24);
 
-        // for (int i = 0; i < 31; i++)
-        // {
-        //     if (read_row_data[i]==0xA5)
-        //     {
-        //         if(Verify_CRC8_Check_Sum(&read_row_data[1+i],5))
-        //         {
-        //             data.yaw_angle.char_d[0] = read_row_data[1+i];
-        //             data.yaw_angle.char_d[1] = read_row_data[2+i];
-        //             data.yaw_angle.char_d[2] = read_row_data[3+i];
-        //             data.yaw_angle.char_d[3] = read_row_data[4+i];
-        //             ROS_INFO("get yaw data!\n");
-        //         }
-
-        //         if(Verify_CRC8_Check_Sum(&read_row_data[6+i],5))
-        //         {
-        //             data.pitch_angle.char_d[0] = read_row_data[6+i];
-        //             data.pitch_angle.char_d[1] = read_row_data[7+i];
-        //             data.pitch_angle.char_d[2] = read_row_data[8+i];
-        //             data.pitch_angle.char_d[3] = read_row_data[9+i];
-        //             ROS_INFO("get pitch data!\n");
-        //         }
-
-        //         if(Verify_CRC8_Check_Sum(&read_row_data[11+i],5))
-        //         {
-        //             data.roll_angle.char_d[0] = read_row_data[11+i];
-        //             data.roll_angle.char_d[1] = read_row_data[12+i];
-        //             data.roll_angle.char_d[2] = read_row_data[13+i];
-        //             data.roll_angle.char_d[3] = read_row_data[14+i];
-        //             ROS_INFO("get roll data!\n");
-        //         }
-
-        //         if(Verify_CRC8_Check_Sum(&read_row_data[16+i],5))
-        //         {
-        //             data.chassis_vx.char_d[0] = read_row_data[16+i];
-        //             data.chassis_vx.char_d[1] = read_row_data[17+i];
-        //             data.chassis_vx.char_d[2] = read_row_data[18+i];
-        //             data.chassis_vx.char_d[3] = read_row_data[19+i];
-        //             ROS_INFO("get vx data!\n");
-        //         }
-
-        //         if(Verify_CRC8_Check_Sum(&read_row_data[21+i],5))
-        //         {
-        //             data.chassis_vy.char_d[0] = read_row_data[21+i];
-        //             data.chassis_vy.char_d[1] = read_row_data[22+i];
-        //             data.chassis_vy.char_d[2] = read_row_data[23+i];
-        //             data.chassis_vy.char_d[3] = read_row_data[24+i];
-        //             ROS_INFO("get vy data!\n");
-        //         }
-
-        //         if(Verify_CRC8_Check_Sum(&read_row_data[26+i],5))
-        //         {
-        //             data.chassis_vw.char_d[0] = read_row_data[26+i];
-        //             data.chassis_vw.char_d[1] = read_row_data[27+i];
-        //             data.chassis_vw.char_d[2] = read_row_data[28+i];
-        //             data.chassis_vw.char_d[3] = read_row_data[29+i];
-        //             ROS_INFO("get vw data!\n");
-        //         }
-
-        //             data.sentry_id.char_d[0] = read_row_data[30+i];
-        //             tcflush(serial_fd_, TCIFLUSH);
-        //     }
-        //     else
-        //     {
-        //         tcflush(serial_fd_, TCIFLUSH);
-        //     }
-        // }
             if (read_row_data[0]==0xA5)
             {
                 if(Verify_CRC8_Check_Sum(&read_row_data[1],5))

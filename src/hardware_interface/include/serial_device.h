@@ -86,7 +86,7 @@ namespace serial {
         int Read(uint8_t *buf,int len);
         int send(const uint8_t *buf,int len);
         void receiveData(sentry_info &data);
-        void transformData(const sentry_control &data,int mode);
+        void transformData(const sentry_control &data);
     };
 
 } // serial
