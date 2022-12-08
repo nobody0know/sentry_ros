@@ -21,7 +21,7 @@ namespace serial {
             ROS_INFO("serial started successfully");
             return true;
         } else {
-            ROS_ERROR("failed to start serial %s",port_name_.c_str());
+            ROS_ERROR("HW:failed to start serial %s",port_name_.c_str());
             close_device();
             return false;
         }
@@ -36,7 +36,7 @@ namespace serial {
         serial_fd_= open(port_name_.c_str(), O_RDWR | O_NOCTTY);
 #endif
         if (serial_fd_ < 0) {
-            ROS_ERROR("cannot open device %d %s",serial_fd_,port_name_.c_str());
+            ROS_ERROR("HW:cannot open device %d %s",serial_fd_,port_name_.c_str());
             return false;
         }
         return true;
@@ -56,7 +56,7 @@ namespace serial {
         int i, j;
         /* save current port parameter */
         if (tcgetattr(serial_fd_, &old_termios_) != 0) {
-            ROS_ERROR("fail to save current port");
+            ROS_ERROR("HW:fail to save current port");
             return false;
         }
         memset(&new_termios_, 0, sizeof(new_termios_));
@@ -136,7 +136,7 @@ namespace serial {
 
         /* activite the configuration */
         if ((tcsetattr(serial_fd_, TCSANOW, &new_termios_)) != 0) {
-            ROS_ERROR("failed to activate serial configuration");
+            ROS_ERROR("HW:failed to activate serial configuration");
             return false;
         }
         return true;
@@ -154,7 +154,7 @@ namespace serial {
             ret = read(serial_fd_, buf, len);
                 ROS_INFO("Read once length: %d",ret);
             while (ret == 0) {
-                ROS_WARN("Connection closed, try to reconnect");
+                ROS_WARN("HW:Connection closed, try to reconnect");
               while (!init_serial_port()) {
                 usleep(500000);
               }

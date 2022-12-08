@@ -34,12 +34,12 @@ int main(int argc,char **argv)
     ros::NodeHandle n;
     seri_dev.init_serial_port();
 
-    ros::Publisher chassis_vx_pub = n.advertise<std_msgs::Int16>("chassis_vx",10);
-    ros::Publisher chassis_vy_pub = n.advertise<std_msgs::Int16>("chassis_vy",10);
-    ros::Publisher chassis_vw_pub = n.advertise<std_msgs::Int16>("chassis_vw",10);
-    ros::Publisher gimbal_yaw_pub = n.advertise<std_msgs::Float32>("gimbal_yaw_angle",10);
-    ros::Publisher gimbal_pitch_pub = n.advertise<std_msgs::Float32>("gimbal_pitch_angle",10);
-    ros::Publisher gimbal_roll_pub = n.advertise<std_msgs::Float32>("gimbal_roll_angle",10);
+    ros::Publisher chassis_vx_pub = n.advertise<std_msgs::Int16>("chassis_vx",100);
+    ros::Publisher chassis_vy_pub = n.advertise<std_msgs::Int16>("chassis_vy",100);
+    ros::Publisher chassis_vw_pub = n.advertise<std_msgs::Int16>("chassis_vw",100);
+    ros::Publisher gimbal_yaw_pub = n.advertise<std_msgs::Float32>("gimbal_yaw_angle",100);
+    ros::Publisher gimbal_pitch_pub = n.advertise<std_msgs::Float32>("gimbal_pitch_angle",100);
+    ros::Publisher gimbal_roll_pub = n.advertise<std_msgs::Float32>("gimbal_roll_angle",100);
 
     ros::Subscriber chassis_sub = n.subscribe("cmd_v",100,cmdCallback);
     ros::Subscriber gimbal_yaw_sub = n.subscribe("gimbal_yaw_ctr",100,gimbalYawCallback);

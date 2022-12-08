@@ -20,20 +20,22 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "odometry_publisher");
     ros::NodeHandle n;
     odom::chassis_odom_pub chassis_odom_pub(n);
-    ros::Subscriber vx_sub = n.subscribe<std_msgs::Int16>("chassis_vx", 1000, vx_Callback);
-    ros::Subscriber vy_sub = n.subscribe<std_msgs::Int16>("chassis_vy", 1000, vy_Callback);
-    ros::Subscriber vw_sub = n.subscribe<std_msgs::Int16>("chassis_vw", 1000, vw_Callback);
+    ros::Subscriber vx_sub = n.subscribe<std_msgs::Int16>("chassis_vx", 100, vx_Callback);
+    ros::Subscriber vy_sub = n.subscribe<std_msgs::Int16>("chassis_vy", 100, vy_Callback);
+    ros::Subscriber vw_sub = n.subscribe<std_msgs::Int16>("chassis_vw", 100, vw_Callback);
+    ros::Rate loop_rate(100);
     while (n.ok())
     {
         chassis_odom_pub.publish_odom();
         ros::spinOnce();
+        loop_rate.sleep();
     }
     
 }
 namespace odom{
     chassis_odom_pub::chassis_odom_pub(ros::NodeHandle &n)
     {
-        odom_pub = n.advertise<nav_msgs::Odometry>("odom", 1000);
+        odom_pub = n.advertise<nav_msgs::Odometry>("odom", 100);
         current_time = ros::Time::now();
         last_time = ros::Time::now();
     }
