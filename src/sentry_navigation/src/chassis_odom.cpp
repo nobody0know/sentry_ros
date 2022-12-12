@@ -44,8 +44,8 @@ namespace odom{
         current_time = ros::Time::now();
 
         double dt = (current_time - last_time).toSec();
-        double delta_x = (chassis_odom.vx * cos(chassis_odom.vw) - chassis_odom.vy * sin(chassis_odom.vy) * dt);
-        double delta_y = (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vy) * dt);
+        double delta_x = (chassis_odom.vx * cos(chassis_odom.vw) - chassis_odom.vy * sin(chassis_odom.vw) * dt);
+        double delta_y = (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vw) * dt);
         double delta_th = chassis_odom.vw * dt;
         chassis_odom.x_pos += delta_x;
         chassis_odom.y_pos += delta_y;
