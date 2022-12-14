@@ -58,9 +58,9 @@ typedef struct
     float_char yaw_angle;
     float_char pitch_angle;
     float_char roll_angle;
-    float_char chassis_vx;
-    float_char chassis_vy;
-    float_char chassis_vw;
+    int16_char chassis_vx;
+    int16_char chassis_vy;
+    int16_char chassis_vw;
 }sentry_info;
 
 namespace serial {

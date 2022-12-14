@@ -1,16 +1,16 @@
 #include"chassis_odom.h"
 c_odom chassis_odom;
-void vx_Callback(const std_msgs::Int16 vx)
+void vx_Callback(const std_msgs::Float32 vx)
 {
     chassis_odom.vx = vx.data;
 }
 
-void vy_Callback(const std_msgs::Int16 vy)
+void vy_Callback(const std_msgs::Float32 vy)
 {
     chassis_odom.vy = vy.data;
 }
 
-void vw_Callback(const std_msgs::Int16 vw)
+void vw_Callback(const std_msgs::Float32 vw)
 {
     chassis_odom.vw = vw.data;
 }
@@ -20,9 +20,9 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "odometry_publisher");
     ros::NodeHandle n;
     odom::chassis_odom_pub chassis_odom_pub(n);
-    ros::Subscriber vx_sub = n.subscribe<std_msgs::Int16>("chassis_vx", 100, vx_Callback);
-    ros::Subscriber vy_sub = n.subscribe<std_msgs::Int16>("chassis_vy", 100, vy_Callback);
-    ros::Subscriber vw_sub = n.subscribe<std_msgs::Int16>("chassis_vw", 100, vw_Callback);
+    ros::Subscriber vx_sub = n.subscribe<std_msgs::Float32>("chassis_vx", 100, vx_Callback);
+    ros::Subscriber vy_sub = n.subscribe<std_msgs::Float32>("chassis_vy", 100, vy_Callback);
+    ros::Subscriber vw_sub = n.subscribe<std_msgs::Float32>("chassis_vw", 100, vw_Callback);
     ros::Rate loop_rate(100);
     while (n.ok())
     {
@@ -43,22 +43,19 @@ namespace odom{
     {
         current_time = ros::Time::now();
 
-        double dt = (current_time - last_time).toSec();
-        double delta_x = (chassis_odom.vx * cos(chassis_odom.vw) - chassis_odom.vy * sin(chassis_odom.vw) * dt);
-        double delta_y = (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vw) * dt);
-        double delta_th = chassis_odom.vw * dt;
-        chassis_odom.x_pos += delta_x;
-        chassis_odom.y_pos += delta_y;
-        chassis_odom.z_pos += delta_th;
+        float dt = (current_time - last_time).toSec();
+        chassis_odom.x_pos += (chassis_odom.vx * cos(chassis_odom.vw) - chassis_odom.vy * sin(chassis_odom.vw)) * dt;
+        chassis_odom.y_pos += (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vw)) * dt;
+        chassis_odom.z_pos += chassis_odom.vw * dt;
 //      因为里程计使用麦轮解算得到,无需里程计到base_footprint的tf变换,直接从融合算法ekf发布tf变换即可    
         geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom.vw);
 
         odom.header.stamp = current_time;
         odom.header.frame_id = "odom_combined";
 
-        odom.pose.pose.orientation.x = chassis_odom.x_pos;
-        odom.pose.pose.orientation.y = chassis_odom.y_pos;
-        odom.pose.pose.orientation.z = 0.0;
+        odom.pose.pose.position.x = chassis_odom.x_pos;
+        odom.pose.pose.position.y = chassis_odom.y_pos;
+        odom.pose.pose.position.z = chassis_odom.z_pos;
         odom.pose.pose.orientation = odom_quat;
         
         odom.child_frame_id = "base_footprint";

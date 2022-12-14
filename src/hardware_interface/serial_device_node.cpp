@@ -58,9 +58,9 @@ int main(int argc,char **argv)
 
         seri_dev.receiveData(info_data);
 
-        vx.data = info_data.chassis_vx.float_d;
-        vy.data = info_data.chassis_vy.float_d;
-        vw.data = info_data.chassis_vw.float_d;
+        vx.data = (float)info_data.chassis_vx.int16_d/1000 ;
+        vy.data = (float)info_data.chassis_vy.int16_d/1000 ;
+        vw.data = (float)info_data.chassis_vw.int16_d/1000 ;
         yaw_angle.data = info_data.yaw_angle.float_d;
         pitch_angle.data = info_data.pitch_angle.float_d;
         roll_angle.data = info_data.roll_angle.float_d;
