@@ -37,9 +37,9 @@ const double odom_twist_covariance2[36] = {1e-9,    0,    0,   0,   0,    0,
 
 typedef struct
 {
-    int16_t vx=0;
-    int16_t vy=0;
-    int16_t vw=0;
+    float vx=0;
+    float vy=0;
+    float vw=0;
 
     float x_pos=0;
     float y_pos=0;
