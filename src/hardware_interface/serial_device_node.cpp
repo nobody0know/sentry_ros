@@ -61,9 +61,9 @@ int main(int argc,char **argv)
         vx.data = (float)info_data.chassis_vx.int16_d/1000 ;
         vy.data = (float)info_data.chassis_vy.int16_d/1000 ;
         vw.data = (float)info_data.chassis_vw.int16_d/1000 ;
-        yaw_angle.data = info_data.yaw_angle.float_d;
-        pitch_angle.data = info_data.pitch_angle.float_d;
-        roll_angle.data = info_data.roll_angle.float_d;
+        yaw_angle.data = (float)info_data.yaw_angle.int16_d/100;
+        pitch_angle.data = (float)info_data.pitch_angle.int16_d/100;
+        roll_angle.data = (float)info_data.roll_angle.int16_d/100;
 
         chassis_vx_pub.publish(vx);
         chassis_vy_pub.publish(vy);

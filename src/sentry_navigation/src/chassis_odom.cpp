@@ -48,7 +48,7 @@ namespace odom{
         chassis_odom.y_pos += (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vw)) * dt;
         chassis_odom.z_pos += chassis_odom.vw * dt;
 //      因为里程计使用麦轮解算得到,无需里程计到base_footprint的tf变换,直接从融合算法ekf发布tf变换即可    
-        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom.vw);
+        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom.z_pos);
 
         odom.header.stamp = current_time;
         odom.header.frame_id = "odom_combined";
@@ -70,7 +70,7 @@ namespace odom{
         }
         else
         {
-            //如果小车velocity非零，考虑到运动中编码器可能带来的滑动误差，认为imu的数据更可靠
+            // 如果小车velocity非零，考虑到运动中编码器可能带来的滑动误差，认为imu的数据更可靠
             memcpy(&odom.pose.covariance, odom_pose_covariance, sizeof(odom_pose_covariance)),
             memcpy(&odom.twist.covariance, odom_twist_covariance, sizeof(odom_twist_covariance));       
         }

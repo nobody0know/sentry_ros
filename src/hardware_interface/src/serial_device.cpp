@@ -227,53 +227,53 @@ namespace serial {
 #if USING_COMMEND_LINE
         int byte = read(serial_fd_,read_row_data,80);
 #else 
-        int byte = read(serial_fd_,read_row_data,24);
+        int byte = read(serial_fd_,read_row_data,20);
 
             if (read_row_data[0]==0xA5)
             {
-                if(Verify_CRC8_Check_Sum(&read_row_data[1],5))
+                if(Verify_CRC8_Check_Sum(&read_row_data[1],3))
                 {
                     data.yaw_angle.char_d[0] = read_row_data[1];
                     data.yaw_angle.char_d[1] = read_row_data[2];
-                    data.yaw_angle.char_d[2] = read_row_data[3];
-                    data.yaw_angle.char_d[3] = read_row_data[4];
-                    // ROS_INFO("get yaw data!\n");
+                    //ROS_INFO("get yaw data!\n");
                 }
 
-                if(Verify_CRC8_Check_Sum(&read_row_data[6],5))
+                if(Verify_CRC8_Check_Sum(&read_row_data[4],3))
                 {
-                    data.pitch_angle.char_d[0] = read_row_data[6];
-                    data.pitch_angle.char_d[1] = read_row_data[7];
-                    data.pitch_angle.char_d[2] = read_row_data[8];
-                    data.pitch_angle.char_d[3] = read_row_data[9];
+                    data.pitch_angle.char_d[0] = read_row_data[4];
+                    data.pitch_angle.char_d[1] = read_row_data[5];
                     // ROS_INFO("get pitch data!\n");
                 }
 
-                if(Verify_CRC8_Check_Sum(&read_row_data[11],5))
+                if(Verify_CRC8_Check_Sum(&read_row_data[7],3))
                 {
-                    data.roll_angle.char_d[0] = read_row_data[11];
-                    data.roll_angle.char_d[1] = read_row_data[12];
-                    data.roll_angle.char_d[2] = read_row_data[13];
-                    data.roll_angle.char_d[3] = read_row_data[14];
+                    data.roll_angle.char_d[0] = read_row_data[7];
+                    data.roll_angle.char_d[1] = read_row_data[8];
                     // ROS_INFO("get roll data!\n");
                 }
 
-                if(Verify_CRC8_Check_Sum(&read_row_data[16],7))
+                if(Verify_CRC8_Check_Sum(&read_row_data[10],3))
                 {
-                    data.chassis_vx.char_d[0] = read_row_data[16];
-                    data.chassis_vx.char_d[1] = read_row_data[17];
-                    ROS_INFO("get vx data:%d\n",data.chassis_vx.int16_d);
-
-                    data.chassis_vy.char_d[0] = read_row_data[18];
-                    data.chassis_vy.char_d[1] = read_row_data[19];
-                    ROS_INFO("get vy data!\n");
-
-                    data.chassis_vw.char_d[0] = read_row_data[20];
-                    data.chassis_vw.char_d[1] = read_row_data[21];
-                    ROS_INFO("get vw data!\n");
+                    data.chassis_vx.char_d[0] = read_row_data[10];
+                    data.chassis_vx.char_d[1] = read_row_data[11];
+                   ROS_INFO("get vx data:%d\n",data.chassis_vx.int16_d);
                 }
 
-                    data.sentry_id.char_d[0] = read_row_data[23];
+                if(Verify_CRC8_Check_Sum(&read_row_data[13],3))
+                {
+                    data.chassis_vy.char_d[0] = read_row_data[13];
+                    data.chassis_vy.char_d[1] = read_row_data[14];
+                   // ROS_INFO("get vy data!\n");
+                }
+
+                if(Verify_CRC8_Check_Sum(&read_row_data[16],3))
+                {
+                    data.chassis_vw.char_d[0] = read_row_data[16];
+                    data.chassis_vw.char_d[1] = read_row_data[17];
+                    ROS_INFO("get vw data!%d\n",data.chassis_vw.int16_d);
+                }
+
+                    data.sentry_id.char_d[0] = read_row_data[19];
                     tcflush(serial_fd_, TCIFLUSH);
             }
             else
