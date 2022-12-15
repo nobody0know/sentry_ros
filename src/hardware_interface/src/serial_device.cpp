@@ -227,7 +227,7 @@ namespace serial {
 #if USING_COMMEND_LINE
         int byte = read(serial_fd_,read_row_data,80);
 #else 
-        int byte = read(serial_fd_,read_row_data,24);
+        int byte = read(serial_fd_,read_row_data,30);
 
             if (read_row_data[0]==0xA5)
             {
@@ -237,7 +237,7 @@ namespace serial {
                     data.yaw_angle.char_d[1] = read_row_data[2];
                     data.yaw_angle.char_d[2] = read_row_data[3];
                     data.yaw_angle.char_d[3] = read_row_data[4];
-                    // ROS_INFO("get yaw data!\n");
+                    ROS_INFO("get yaw data!\n");
                 }
 
                 if(Verify_CRC8_Check_Sum(&read_row_data[6],5))
@@ -262,18 +262,24 @@ namespace serial {
                 {
                     data.chassis_vx.char_d[0] = read_row_data[16];
                     data.chassis_vx.char_d[1] = read_row_data[17];
-                    // ROS_INFO("get vx data\n");
+                    data.chassis_vx.char_d[2] = read_row_data[18];
+                    data.chassis_vx.char_d[3] = read_row_data[19];
+                    ROS_INFO("get vx data\n");
 
-                    data.chassis_vy.char_d[0] = read_row_data[18];
-                    data.chassis_vy.char_d[1] = read_row_data[19];
-                    // ROS_INFO("get vy data!\n");
+                    data.chassis_vy.char_d[0] = read_row_data[20];
+                    data.chassis_vy.char_d[1] = read_row_data[21];
+                    data.chassis_vy.char_d[2] = read_row_data[22];
+                    data.chassis_vy.char_d[3] = read_row_data[23];
+                    ROS_INFO("get vy data!\n");
 
-                    data.chassis_vw.char_d[0] = read_row_data[20];
-                    data.chassis_vw.char_d[1] = read_row_data[21];
-                    // ROS_INFO("get vw data!\n");
+                    data.chassis_vw.char_d[0] = read_row_data[24];
+                    data.chassis_vw.char_d[1] = read_row_data[25];
+                    data.chassis_vw.char_d[2] = read_row_data[26];
+                    data.chassis_vw.char_d[3] = read_row_data[27];
+                    ROS_INFO("get vw data!\n");
                 }
 
-                    data.sentry_id.char_d[0] = read_row_data[23];
+                    data.sentry_id.char_d[0] = read_row_data[28];
                     tcflush(serial_fd_, TCIFLUSH);
             }
             else

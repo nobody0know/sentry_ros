@@ -34,9 +34,9 @@ int main(int argc,char **argv)
     ros::NodeHandle n;
     seri_dev.init_serial_port();
 
-    ros::Publisher chassis_vx_pub = n.advertise<std_msgs::Int16>("chassis_vx",100);
-    ros::Publisher chassis_vy_pub = n.advertise<std_msgs::Int16>("chassis_vy",100);
-    ros::Publisher chassis_vw_pub = n.advertise<std_msgs::Int16>("chassis_vw",100);
+    ros::Publisher chassis_vx_pub = n.advertise<std_msgs::Float32>("chassis_vx",100);
+    ros::Publisher chassis_vy_pub = n.advertise<std_msgs::Float32>("chassis_vy",100);
+    ros::Publisher chassis_vw_pub = n.advertise<std_msgs::Float32>("chassis_vw",100);
     ros::Publisher gimbal_yaw_pub = n.advertise<std_msgs::Float32>("gimbal_yaw_angle",100);
     ros::Publisher gimbal_pitch_pub = n.advertise<std_msgs::Float32>("gimbal_pitch_angle",100);
     ros::Publisher gimbal_roll_pub = n.advertise<std_msgs::Float32>("gimbal_roll_angle",100);
@@ -49,18 +49,18 @@ int main(int argc,char **argv)
     ros::Rate loop_rate(100);
     while (ros::ok())
     {
-        std_msgs::Int16 vx;
-        std_msgs::Int16 vy;
-        std_msgs::Int16 vw;
+        std_msgs::Float32 vx;
+        std_msgs::Float32 vy;
+        std_msgs::Float32 vw;
         std_msgs::Float32 yaw_angle;
         std_msgs::Float32 pitch_angle;
         std_msgs::Float32 roll_angle;
 
         seri_dev.receiveData(info_data);
 
-        vx.data = info_data.chassis_vx.int16_d;
-        vy.data = info_data.chassis_vy.int16_d;
-        vw.data = info_data.chassis_vw.int16_d;
+        vx.data = info_data.chassis_vx.float_d;
+        vy.data = info_data.chassis_vy.float_d;
+        vw.data = info_data.chassis_vw.float_d;
         yaw_angle.data = info_data.yaw_angle.float_d;
         pitch_angle.data = info_data.pitch_angle.float_d;
         roll_angle.data = info_data.roll_angle.float_d;
@@ -82,6 +82,7 @@ int main(int argc,char **argv)
         {
             gimbal_roll_pub.publish(roll_angle);
         }
+        loop_rate.sleep();
         ros::spinOnce();
     }
     return 0;

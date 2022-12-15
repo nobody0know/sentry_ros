@@ -1,16 +1,16 @@
 #include"chassis_odom.h"
 c_odom chassis_odom;
-void vx_Callback(const std_msgs::Int16 vx)
+void vx_Callback(const std_msgs::Float32 vx)
 {
     chassis_odom.vx = vx.data;
 }
 
-void vy_Callback(const std_msgs::Int16 vy)
+void vy_Callback(const std_msgs::Float32 vy)
 {
     chassis_odom.vy = vy.data;
 }
 
-void vw_Callback(const std_msgs::Int16 vw)
+void vw_Callback(const std_msgs::Float32 vw)
 {
     chassis_odom.vw = vw.data;
 }
@@ -20,9 +20,9 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "odometry_publisher");
     ros::NodeHandle n;
     odom::chassis_odom_pub chassis_odom_pub(n);
-    ros::Subscriber vx_sub = n.subscribe<std_msgs::Int16>("chassis_vx", 100, vx_Callback);
-    ros::Subscriber vy_sub = n.subscribe<std_msgs::Int16>("chassis_vy", 100, vy_Callback);
-    ros::Subscriber vw_sub = n.subscribe<std_msgs::Int16>("chassis_vw", 100, vw_Callback);
+    ros::Subscriber vx_sub = n.subscribe<std_msgs::Float32>("chassis_vx", 100, vx_Callback);
+    ros::Subscriber vy_sub = n.subscribe<std_msgs::Float32>("chassis_vy", 100, vy_Callback);
+    ros::Subscriber vw_sub = n.subscribe<std_msgs::Float32>("chassis_vw", 100, vw_Callback);
     ros::Rate loop_rate(100);
     while (n.ok())
     {
@@ -43,10 +43,10 @@ namespace odom{
     {
         current_time = ros::Time::now();
 
-        double dt = (current_time - last_time).toSec();
-        double delta_x = (chassis_odom.vx * cos(chassis_odom.vw) - chassis_odom.vy * sin(chassis_odom.vw) * dt);
-        double delta_y = (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vw) * dt);
-        double delta_th = chassis_odom.vw * dt;
+        float dt = (current_time - last_time).toSec();
+        float delta_x = (chassis_odom.vx * cos(chassis_odom.vw) - chassis_odom.vy * sin(chassis_odom.vw) * dt);
+        float delta_y = (chassis_odom.vx * sin(chassis_odom.vw) + chassis_odom.vy * cos(chassis_odom.vw) * dt);
+        float delta_th = chassis_odom.vw * dt;
         chassis_odom.x_pos += delta_x;
         chassis_odom.y_pos += delta_y;
         chassis_odom.z_pos += delta_th;
