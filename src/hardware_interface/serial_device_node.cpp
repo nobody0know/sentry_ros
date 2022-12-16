@@ -1,7 +1,7 @@
 #include"serial_device_node.h"
 sentry_info info_data;
 sentry_control ctr_data;
-serial::serial_device seri_dev("/dev/ttyUSB0",115200);
+serial::serial_device seri_dev("/dev/ttyUSB1",115200);
 void cmdCallback(const geometry_msgs::Twist &cmd_data)
 {
     ctr_data.chassis_vx.float_d = cmd_data.linear.x;
@@ -62,6 +62,7 @@ int main(int argc,char **argv)
         vy.data = (float)info_data.chassis_vy.int16_d/1000 ;
         vw.data = (float)info_data.chassis_vw.int16_d/1000 ;
         yaw_angle.data = (float)info_data.yaw_angle.int16_d/100;
+        //ROS_INFO("get yaw data:%f\n",yaw_angle.data);
         pitch_angle.data = (float)info_data.pitch_angle.int16_d/100;
         roll_angle.data = (float)info_data.roll_angle.int16_d/100;
 
