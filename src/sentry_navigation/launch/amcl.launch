@@ -9,11 +9,14 @@
 
     <node pkg="amcl" type="amcl" name="amcl" clear_params="true">
 
+      <!-- <rosparam command="load" file="$(find turn_on_wheeltec_robot)/map/WHEELTEC_end.yaml" />-->
+
       <param name="use_map_topic" value="$(arg use_map_topic)"/>
       <!-- 使用rtabmap分布的Map，连接TF树 -->
       <remap from="/map" to="/$(arg map_topic)"/>
       <!-- Publish scans from best pose at a max of 10 Hz -->
-      <param name="odom_model_type" value="omni"/>
+      <param name="odom_model_type" value="omni-corrected"/>
+      <!-- <param name="odom_model_type" value="omnid"/> -->
       <!-- <param name="odom_model_type" value="diff"/> -->
       <!-- <param name="odom_model_type" value="diff-corrected"/> -->
       <param name="odom_alpha5" value="0.1"/>
@@ -24,7 +27,7 @@
       <param name="max_particles" value="2000"/>
       <param name="kld_err" value="0.05"/>
       <param name="kld_z" value="0.99"/>
-      <param name="odom_alpha1" value="0.1"/>
+      <param name="odom_alpha1" value="0.2"/>
       <param name="odom_alpha2" value="0.2"/>
       <!-- translation std dev, m -->
       <param name="odom_alpha3" value="0.2"/>
@@ -39,7 +42,7 @@
       <!-- <param name="laser_model_type" value="beam"/> -->
       <param name="laser_likelihood_max_dist" value="2.0"/>
       <param name="update_min_d" value="0.25"/>
-      <param name="update_min_a" value="0.02"/>
+      <param name="update_min_a" value="0.2"/>
       <param name="odom_frame_id" value="odom_combined"/>
       <param name="resample_interval" value="1"/>
       <!-- Increase tolerance because the computer can get quite busy -->
