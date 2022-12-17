@@ -10,7 +10,10 @@
 
     <include file="$(find lakibeam1)/launch/lakibeam1_scan.launch"/>
     <!-- 开启gmapping建图算法  -->
-    <include file="$(find sentry_navigation)/launch/algorithm_gmapping.launch" />
+    <!-- <include file="$(find sentry_navigation)/launch/algorithm_gmapping.launch" /> -->
+
+    <!-- 开启cartograph建图算法  -->
+    <include file="$(find sentry_navigation)/launch/demo_revo_lds.launch" />
 
       <!-- 发布用于建图、导航的TF关系与小车外形可视化 -->
     <include file="$(find sentry_navigation)/launch/robot_model_visualization.launch"/>
