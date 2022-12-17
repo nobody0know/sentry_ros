@@ -2,13 +2,14 @@
 
     <include file="$(find hardware_interface)/launch/sentry_serial.launch"/>
 
+    <node pkg="sentry_navigation" type="chassis_odom" name="chassis_odom"/>
+
     <include file="$(find fdilink_ahrs)/launch/ahrs_data.launch"/>
 
-    <node pkg="sentry_navigation" type="chassis_odom" name="chassis_odom"/>
+    <include file="$(find lakibeam1)/launch/lakibeam1_scan.launch"/>
 
     <include file="$(find robot_pose_ekf)/robot_pose_ekf.launch"/>
 
-    <include file="$(find lakibeam1)/launch/lakibeam1_scan.launch"/>
 
       <!-- 发布用于建图、导航的TF关系与小车外形可视化 -->
     <include file="$(find sentry_navigation)/launch/robot_model_visualization.launch"/>
