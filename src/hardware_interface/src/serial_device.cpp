@@ -236,7 +236,7 @@ namespace serial {
                 {
                     data.yaw_angle.char_d[0] = read_row_data[1+i];
                     data.yaw_angle.char_d[1] = read_row_data[2+i];
-                    ROS_INFO("get yaw data!:%f\n",(float)data.yaw_angle.int16_d/100);
+                    // ROS_INFO("get yaw data!:%f\n",(float)data.yaw_angle.int16_d/100);
                 }
 
                 if(Verify_CRC8_Check_Sum(&read_row_data[4+i],3))
@@ -257,7 +257,7 @@ namespace serial {
                 {
                     data.chassis_vx.char_d[0] = read_row_data[10+i];
                     data.chassis_vx.char_d[1] = read_row_data[11+i];
-                   ROS_INFO("get vx data:%d\n",data.chassis_vx.int16_d);
+                //    ROS_INFO("get vx data:%d\n",data.chassis_vx.int16_d);
                 }
 
                 if(Verify_CRC8_Check_Sum(&read_row_data[13+i],3))
@@ -281,7 +281,6 @@ namespace serial {
             {
                 tcflush(serial_fd_, TCIFLUSH);
                 // ROS_ERROR("HW:head error");
-                open_device();
             }
         }
 

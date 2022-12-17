@@ -1,0 +1,17 @@
+<launch>
+    <include file="$(find sentry_navigation)/launch/sentry_start.launch" />
+
+    <!-- 设置需要用于导航的地图  -->
+    <arg name="map_file" default="$(find sentry_navigation)/map/map.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"></node>
+
+    <!-- 开启用于导航的自适应蒙特卡洛定位amcl-->
+    <include file="$(find sentry_navigation)/launch/amcl.launch" />
+
+        <!-- 设置一个/odom与/map之间的静态坐标变换 -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom_combined 100" /> -->
+
+    <!-- MarkerArray功能节点> -->
+    <!-- <node name='send_mark' pkg="sentry_navigation" type="send_mark.py"> -->
+    <!-- </node> -->
+</launch>
