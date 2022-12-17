@@ -1,7 +1,7 @@
 #include"serial_device_node.h"
 sentry_info info_data;
 sentry_control ctr_data;
-serial::serial_device seri_dev("/dev/ttyUSB1",115200);
+serial::serial_device seri_dev("/dev/wheeltec_ch340",115200);
 void cmdCallback(const geometry_msgs::Twist &cmd_data)
 {
     ctr_data.chassis_vx.float_d = cmd_data.linear.x;
