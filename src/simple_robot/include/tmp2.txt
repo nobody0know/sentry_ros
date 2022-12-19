@@ -1,3 +1,4 @@
+
 #ifndef ROBOMASTER_ROBOT_H
 #define ROBOMASTER_ROBOT_H
 
@@ -59,12 +60,11 @@ namespace robomaster
       robot_ctrl.vx = cmd_vel.linear.x;
       robot_ctrl.vy = cmd_vel.linear.y;
       robot_ctrl.vw = cmd_vel.angular.z;
-      robot_ctrl.pitch = 0;
-      robot_ctrl.yaw = 0;
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
       device_ptr_->Write(send_buff_.get(), send_length);
       ROS_INFO("Sending nav_ctrl msg");
+
     }
 
     // void robot_ctrl_callback(const simple_robot::robot_ctrl::ConstPtr &msg)
@@ -85,13 +85,11 @@ namespace robomaster
     {
       ros::NodeHandle nh;
 
-      // robot_ctrl_sub_=nh.subscribe("robot_ctrl",1,&Robot::robot_ctrl_callback,this);
+      // robot_ctrl_sub_ = nh.subscribe("robot_ctrl", 1, &Robot::robot_ctrl_callback, this);
       rc_msg_pub_ = nh.advertise<simple_robot::sc_rc_msg>("rc_message", 1);
-      chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 100);
+      chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 10);
       vision_pub_ = nh.advertise<simple_robot::vision>("vision_data", 1);
-      cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &Robot::navgation_ctrl_callback, this);
-      current_time = ros::Time::now();
-      last_time = ros::Time::now();
+      cmd_vel_sub_ = nh.subscribe("cmd_vel",1,&Robot::navgation_ctrl_callback,this);
 
       return true;
     }
@@ -126,7 +124,6 @@ namespace robomaster
       int flag = 0;
 
       uint8_t last_len = 0;
-
       while (ros::ok())
       {
         // uint16_t read_length = device_ptr_->Read(recv_buff_.get(),BUFF_LENGTH);
@@ -137,7 +134,7 @@ namespace robomaster
         {
           if ((recv_buff_[a] == END1_SOF) && (recv_buff_[a + 1] == END2_SOF))
           {
-            flag = 1;
+            // flag = 1;
             // printf("%x  ",recv_buff_[a]);
             //  printf("%x  ",recv_buff_[a+1]);
             // printf("\n");
@@ -174,7 +171,6 @@ namespace robomaster
         //  }
         // printf("\n");
         // printf("------------------------------------------\n");
-        ros::spinOnce(); 
         usleep(1);
       }
     }
@@ -267,7 +263,8 @@ namespace robomaster
          */
         case CHASSIS_ODOM_CMD_ID:
         {
-          // ROS_INFO("ODOM info");
+
+          ROS_INFO("odom info");
           // printf("get chassis_odom_msg");
           memcpy(&chassis_odom_info_, frame + index, sizeof(chassis_odom_info_t));
           current_time = ros::Time::now();
@@ -291,18 +288,17 @@ namespace robomaster
           odom_.twist.twist.linear.x = chassis_odom_info_.vx;
           odom_.twist.twist.linear.y = chassis_odom_info_.vy;
           odom_.twist.twist.angular.z = chassis_odom_info_.vw;
-          if (chassis_odom_info_.vx ==0 && chassis_odom_info_.vy ==0 && chassis_odom_info_.vw ==0)
+          if (chassis_odom_info_.vx < 0.1 && chassis_odom_info_.vx > -0.1 && chassis_odom_info_.vy < 0.1 && chassis_odom_info_.vy > -0.1 && chassis_odom_info_.vw < 0.1 && chassis_odom_info_.vw > -0.1)
           {
-            // 如果velocity是零，说明编码器的误差会比较小，认为编码器数据更可靠
-            memcpy(&odom_.pose.covariance, odom_pose_covariance2, sizeof(odom_pose_covariance2)),
-            memcpy(&odom_.twist.covariance, odom_twist_covariance2, sizeof(odom_twist_covariance2));
+            // 如果小车velocity非零，考虑到运动中编码器可能带来的滑动误差，认为imu的数据更可靠
+                memcpy(&odom_.pose.covariance, odom_pose_covariance, sizeof(odom_pose_covariance));
+                memcpy(&odom_.twist.covariance, odom_twist_covariance, sizeof(odom_twist_covariance));
           }
           else
           {
-            // 如果小车velocity非零，考虑到运动中编码器可能带来的滑动误差，认为imu的数据更可靠
-            memcpy(&odom_.pose.covariance, odom_pose_covariance, sizeof(odom_pose_covariance)),
-            memcpy(&odom_.twist.covariance, odom_twist_covariance, sizeof(odom_twist_covariance));
-
+            // 如果velocity是零，说明编码器的误差会比较小，认为编码器数据更可靠
+                memcpy(&odom_.pose.covariance, odom_pose_covariance2, sizeof(odom_pose_covariance2));
+                memcpy(&odom_.twist.covariance, odom_twist_covariance2, sizeof(odom_twist_covariance2));
           }
           chassis_odom_pub_.publish(odom_);
           last_time = current_time;
@@ -324,9 +320,10 @@ namespace robomaster
           rc_msg_pub_.publish(sc_rc_msg);
         }
         break;
+
         case RGB_ID:
         {
-          // ROS_INFO("RGB_ID\n");
+          ROS_INFO("RGB_ID\n");
         }
         break;
         case VISION_ID:
