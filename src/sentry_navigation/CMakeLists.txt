@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  std_srvs
+  actionlib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -111,7 +113,7 @@ catkin_package(
 #  LIBRARIES sentry_navigation
 #  CATKIN_DEPENDS geometry_msgs move_base_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
-CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs move_base_msgs nav_msgs tf
+CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs move_base_msgs nav_msgs tf std_srvs actionlib
 )
 
 ###########
@@ -130,12 +132,21 @@ add_library(odom
   src/chassis_odom.cpp
   include/chassis_odom.h
 )
+add_library(amcl_global_estimate
+  src/deliver.cpp
+)
 
 add_executable(chassis_odom src/chassis_odom.cpp)
+add_executable(deliver src/deliver.cpp)
 
 target_link_libraries(chassis_odom
   ${catkin_LIBRARIES}
   odom
+)
+
+target_link_libraries(deliver
+  ${catkin_LIBRARIES}
+  amcl_global_estimate
 )
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

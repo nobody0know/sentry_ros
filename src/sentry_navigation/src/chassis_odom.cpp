@@ -1,3 +1,4 @@
+//暂时弃用,使用虚拟串口,里程计信息于虚拟串口程序中发布
 #include"chassis_odom.h"
 c_odom chassis_odom;
 void vx_Callback(const std_msgs::Float32 vx)
@@ -62,17 +63,17 @@ namespace odom{
         odom.twist.twist.linear.x = chassis_odom.vx;
         odom.twist.twist.linear.y = chassis_odom.vy;
         odom.twist.twist.angular.z = chassis_odom.vw;
-        if(chassis_odom.vx== 0&&chassis_odom.vy== 0&&chassis_odom.vw== 0)
-        {
-            //如果velocity是零，说明编码器的误差会比较小，认为编码器数据更可靠
-            memcpy(&odom.pose.covariance, odom_pose_covariance2, sizeof(odom_pose_covariance2)),
-            memcpy(&odom.twist.covariance, odom_twist_covariance2, sizeof(odom_twist_covariance2));
-        }
-        else
+        if(chassis_odom.vx<0.1&&chassis_odom.vx>-0.1&&chassis_odom.vy<0.1&&chassis_odom.vy>-0.1&&chassis_odom.vw<0.1&&chassis_odom.vw>-0.1)
         {
             // 如果小车velocity非零，考虑到运动中编码器可能带来的滑动误差，认为imu的数据更可靠
             memcpy(&odom.pose.covariance, odom_pose_covariance, sizeof(odom_pose_covariance)),
             memcpy(&odom.twist.covariance, odom_twist_covariance, sizeof(odom_twist_covariance));       
+        }
+        else
+        {
+            //如果velocity是零，说明编码器的误差会比较小，认为编码器数据更可靠
+            memcpy(&odom.pose.covariance, odom_pose_covariance2, sizeof(odom_pose_covariance2)),
+            memcpy(&odom.twist.covariance, odom_twist_covariance2, sizeof(odom_twist_covariance2));
         }
         odom_pub.publish(odom);
         last_time = current_time;

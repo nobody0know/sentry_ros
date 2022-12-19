@@ -1,6 +1,35 @@
 #ifndef ROBOMASTER_PROTOCOL_H
 #define ROBOMASTER_PROTOCOL_H
 
+//协方差矩阵，用于里程计话题数据，用于robt_pose_ekf功能包
+const double odom_pose_covariance[36]   = {1e-3,    0,    0,   0,   0,    0, 
+										      0, 1e-3,    0,   0,   0,    0,
+										      0,    0,  1e6,   0,   0,    0,
+										      0,    0,    0, 1e6,   0,    0,
+										      0,    0,    0,   0, 1e6,    0,
+										      0,    0,    0,   0,   0,  1e3 };
+
+const double odom_pose_covariance2[36]  = {1e-9,    0,    0,   0,   0,    0, 
+										      0, 1e-3, 1e-9,   0,   0,    0,
+										      0,    0,  1e6,   0,   0,    0,
+										      0,    0,    0, 1e6,   0,    0,
+										      0,    0,    0,   0, 1e6,    0,
+										      0,    0,    0,   0,   0, 1e-9 };
+
+const double odom_twist_covariance[36]  = {1e-3,    0,    0,   0,   0,    0, 
+										      0, 1e-3,    0,   0,   0,    0,
+										      0,    0,  1e6,   0,   0,    0,
+										      0,    0,    0, 1e6,   0,    0,
+										      0,    0,    0,   0, 1e6,    0,
+										      0,    0,    0,   0,   0,  1e3 };
+										      
+const double odom_twist_covariance2[36] = {1e-9,    0,    0,   0,   0,    0, 
+										      0, 1e-3, 1e-9,   0,   0,    0,
+										      0,    0,  1e6,   0,   0,    0,
+										      0,    0,    0, 1e6,   0,    0,
+										      0,    0,    0,   0, 1e6,    0,
+										      0,    0,    0,   0,   0, 1e-9} ;
+
 #define HEADER_SOF 0xA5
 #define END1_SOF 0x0D
 #define END2_SOF 0x0A
@@ -31,6 +60,12 @@ typedef struct
   float vw;
 }  chassis_odom_info_t;
 
+typedef struct
+{
+  float x_pos;
+  float y_pos;
+  float z_pos;
+}  chassis_odom_pose_t;
 
 typedef struct
 {

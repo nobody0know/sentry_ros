@@ -8,6 +8,7 @@
       "includePath": [
         "/opt/ros/noetic/include/**",
         "./src/hardware_interface/include/**",
+        "./src/simple_robot/include/**",
         "./src/sentry_navigation/include/**",
         "/usr/include/**",
         "./include/**"

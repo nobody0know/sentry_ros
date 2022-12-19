@@ -6,11 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1
         - /TF1/Frames1
         - /PoseWithCovariance1/Covariance1
-        - /Map2
-        - /Path1
-        - /Path2
       Splitter Ratio: 0.5
     Tree Height: 839
   - Class: rviz/Selection
@@ -139,29 +137,29 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         base_footprint:
           Value: true
         base_link:
-          Value: true
+          Value: false
         camera_link:
-          Value: true
+          Value: false
         gyro_link:
-          Value: true
+          Value: false
         laser:
-          Value: true
+          Value: false
         left_front_link:
-          Value: true
+          Value: false
         left_wheel_link:
-          Value: true
+          Value: false
         map:
           Value: true
         odom_combined:
           Value: true
         right_front_link:
-          Value: true
+          Value: false
         right_wheel_link:
-          Value: true
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -339,7 +337,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 26.28911018371582
+      Distance: 15.765456199645996
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

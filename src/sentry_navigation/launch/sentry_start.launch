@@ -1,6 +1,7 @@
 <launch>
 
-    <include file="$(find hardware_interface)/launch/sentry_serial.launch"/>
+    <!-- <include file="$(find hardware_interface)/launch/sentry_serial.launch"/> -->
+    <node pkg="simple_robot" type="simple_robot" name="simple_robot" respawn="true" output="screen" />
 
     <node pkg="sentry_navigation" type="chassis_odom" name="chassis_odom"/>
 

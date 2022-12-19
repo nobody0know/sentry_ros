@@ -21,5 +21,5 @@ using namespace robomaster;
 int main(int argc, char** argv){
   ros::init(argc,argv,"simple_robot");
   Robot robot("/dev/robomaster");
-  ros::spin();
+  
 }
