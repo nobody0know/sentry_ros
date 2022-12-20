@@ -18,4 +18,4 @@ inflation_layer:
   #代价地图数值随与障碍物距离下降的比值，越大会导致路径规划越靠近障碍物
   cost_scaling_factor: 1.0
   #机器人膨胀半径，影响路径规划，单位：m
-  inflation_radius: 0.2  
+  inflation_radius: 0  
