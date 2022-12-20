@@ -59,8 +59,6 @@ namespace robomaster
       robot_ctrl.vx = cmd_vel.linear.x;
       robot_ctrl.vy = cmd_vel.linear.y;
       robot_ctrl.vw = cmd_vel.angular.z;
-      robot_ctrl.pitch = 0;
-      robot_ctrl.yaw = 0;
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
       device_ptr_->Write(send_buff_.get(), send_length);

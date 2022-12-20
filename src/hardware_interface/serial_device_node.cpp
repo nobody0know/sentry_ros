@@ -101,8 +101,8 @@ int main(int argc,char** argv)
     while(1){
         geometry_msgs::Twist twist;
         geometry_msgs::Vector3 linear;
-        linear.x=50;
-        linear.y=30;
+        linear.x=30;
+        linear.y=10;
         linear.z=0;
         geometry_msgs::Vector3 angular;
         angular.x=0;

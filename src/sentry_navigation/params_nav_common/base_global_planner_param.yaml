@@ -15,7 +15,7 @@ GlobalPlanner:
   publish_potential: true
 
   #如果为true，创建一条遵循网格边界的路径。false，则使用梯度下降法。
-  use_grid_path: false
+  use_grid_path: true
 
   #是否允许路径穿过代价地图的未知区域
   allow_unknown:  true  

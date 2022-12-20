@@ -55,9 +55,9 @@ typedef  struct
 
 typedef struct
 {
-  float vx;
-  float vy;
-  float vw;
+  float vx=0;
+  float vy=0;
+  float vw=0;
 }  chassis_odom_info_t;
 
 typedef struct
@@ -69,11 +69,11 @@ typedef struct
 
 typedef struct
 {
-    float vx;
-    float vy;
-    float vw;
-    float yaw;
-    float pitch;
+    float vx=0;
+    float vy=0;
+    float vw=0;
+    float yaw=0;
+    float pitch=0;
 }robot_ctrl_info_t;
 
 typedef struct
@@ -89,10 +89,10 @@ typedef struct
 {
   uint16_t id;
   uint16_t shoot_sta;
-  float pitch;
-  float yaw;
-  float roll;
-  float shoot;
+  float pitch=0;
+  float yaw=0;
+  float roll=0;
+  float shoot=0;
 } vision_t;
 
 typedef struct

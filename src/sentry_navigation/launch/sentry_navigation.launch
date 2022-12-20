@@ -8,7 +8,7 @@
     <include file="$(find sentry_navigation)/launch/amcl.launch" />
 
     <!-- 开启teb_local_planner导航算法 与dwa算法相比效果更佳-->
-  <include file="$(find sentry_navigation)/launch/include/teb_local_planner.launch">
+  <include file="$(find sentry_navigation)/launch/include/dwa_local_planner.launch">
     <arg name="car_mode" value="mini_mec"/>
   </include>
     <!-- <node pkg="sentry_navigation" type="deliver" name="deliver" output="screen"></node> -->
