@@ -10,13 +10,13 @@ DWAPlannerROS:
   max_vel_trans: 0.5      #机器人最大移动速度的绝对值，单位为：m/s
   min_vel_trans: 0      #机器人最小移动速度的绝对值，单位为：m/s
   trans_stopped_vel: 0.1  #机器人被认属于“停止”状态时的平移速度。如果机器人的速度低于该值，则认为机器人已停止。单位为 m/s
-  max_vel_theta: 0.1      #机器人的最大旋转角速度的绝对值，单位：rad/s 
+  max_vel_theta: 0.5      #机器人的最大旋转角速度的绝对值，单位：rad/s 
   min_vel_theta: 0      #机器人的最小旋转角速度的绝对值，单位为：rad/s 
   theta_stopped_vel : 0.8 #机器人被认属于“停止”状态时的旋转速度。单位为：rad/s  
   acc_lim_x: 30          #机器人在x方向的极限加速度，单位：m/s^2
   acc_lim_theta: 30      #机器人的极限旋转加速度，单位为：m/s^2
   acc_lim_y: 30          #机器人在y方向的极限加速度，单位：m/s^2。非全向移动机器人为0   
-  max_rot_vel: 0.1
+  max_rot_vel: 0.5
   min_rot_vel: 0
   #目标点误差允许值
   xy_goal_tolerance: 0.5   #机器人到达目标点时附近时的弧度偏差允许量，在该偏差内认为已经到达目标点单位为：m
@@ -27,12 +27,12 @@ DWAPlannerROS:
   sim_time: 1.8      #前向模拟轨迹的时间，单位为：s
   vx_samples: 6      #x方向速度空间的采样点数
   vy_samples: 6      #y方向速度空间采样点数.。差分驱动机器人y方向永远只有1个值（0.0）
-  vtheta_samples: 6 #旋转方向的速度空间采样点数
+  vtheta_samples: 20 #旋转方向的速度空间采样点数
 
   #轨迹评分参数
   path_distance_bias: 100.0     #控制器与给定路径接近程度的权重
   goal_distance_bias: 24.0      #控制器与局部目标点的接近程度的权重，也用于速度控制
-  occdist_scale: 0            #控制器躲避障碍物的程度
+  occdist_scale: 3            #控制器躲避障碍物的程度
   forward_point_distance: 0.325 #以机器人为中心，额外放置一个计分点的距离
   stop_time_buffer: 0.1         #机器人在碰撞发生前必须拥有的最少时间量。该时间内所采用的轨迹仍视为有效。即：为防止碰撞,机器人必须提前停止的时间长度
   scaling_speed: 0.25           #开始缩放机器人足迹时的速度的绝对值，单位为m/s。

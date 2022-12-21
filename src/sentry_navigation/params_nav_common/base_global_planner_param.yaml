@@ -3,7 +3,7 @@
 #全局路径规划器GlobalPlanner命名空间
 GlobalPlanner:  
   #是否使用dijkstra算法进行路径规划，false则选择A*算法进行路径规划
-  use_dijkstra: false
+  use_dijkstra: true
 
   #是否使用二次逼近法进行计算，false则使用更简单的计算方法
   use_quadratic: false

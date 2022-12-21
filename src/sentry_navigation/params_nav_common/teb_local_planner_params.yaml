@@ -74,7 +74,7 @@ TebLocalPlannerROS:
   visualize_with_time_as_z_axis_scale: False
 
   #恢复行为
-  shrink_horizon_backup: True
+  shrink_horizon_backup: false
   shrink_horizon_min_duration: 10
   oscillation_recovery: False
   oscillation_v_eps: 0.1

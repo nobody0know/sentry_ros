@@ -57,7 +57,7 @@ namespace robomaster
     void navgation_ctrl_callback(const geometry_msgs::Twist &cmd_vel)
     {
       robot_ctrl.vx = cmd_vel.linear.x;
-      robot_ctrl.vy = cmd_vel.linear.y;
+      robot_ctrl.vy = -cmd_vel.linear.y;
       robot_ctrl.vw = cmd_vel.angular.z;
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
