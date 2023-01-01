@@ -3,7 +3,7 @@
 #全局路径规划器GlobalPlanner命名空间
 GlobalPlanner:  
   #是否使用dijkstra算法进行路径规划，false则选择A*算法进行路径规划
-  use_dijkstra: true
+  use_dijkstra: false
 
   #是否使用二次逼近法进行计算，false则使用更简单的计算方法
   use_quadratic: false
@@ -18,7 +18,7 @@ GlobalPlanner:
   use_grid_path: false
 
   #是否允许路径穿过代价地图的未知区域
-  allow_unknown:  false  
+  allow_unknown:  true  
 
   #允许的创建的路径规划终点与设置目标点的偏差为多少，单位：m
   default_tolerance: 0.0
@@ -34,4 +34,4 @@ GlobalPlanner:
   #What window to use to determine the orientation based on the position derivative specified by the orientation mode
   orientation_window_size: 1
   #用完全占用方格勾勒出全局代价地图。对于“非static_map”(rolling_window)的全局代价地图，需要将其设置为false
-  outline_map: false
+  outline_map: true

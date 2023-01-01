@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /Grid1
         - /Local Plan1
         - /Global Plan1
       Splitter Ratio: 0.6526610255241394
@@ -49,7 +50,7 @@ Visualization Manager:
         Z: 0
       Plane: XY
       Plane Cell Count: 80
-      Reference Frame: odom_combined
+      Reference Frame: map
       Value: true
     - Alpha: 1
       Class: rviz/RobotModel
@@ -170,8 +171,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.28277158737182617
-        Min Value: 0.18661972880363464
+        Max Value: 0.22685018181800842
+        Min Value: 0.1652509570121765
         Value: true
       Axis: Z
       Channel Name: intensity

@@ -9,14 +9,14 @@ base_global_planner: "global_planner/GlobalPlanner"
 
 #设置局部路径规划器
 #局部路径规划器会在文件【teb_local_planner.launch】、【dwa_local_planner.launch】对应文件内重新设置
-base_local_planner: "dwa_local_planner/DWAPlannerROS"
-# base_local_planner: "teb_local_planner/TebLocalPlannerROS"
+#base_local_planner: "dwa_local_planner/DWAPlannerROS"
+base_local_planner: "teb_local_planner/TebLocalPlannerROS"
 
 #发布机器人速度控制命令话题cmd_vel的频率，单位：Hz
-controller_frequency: 10.0 
+controller_frequency: 5.0 
 
 #全局路径规划器的规划频率，如果设置为0，仅在设置目标点位置时执行一次，单位：Hz
-planner_frequency: 10.0  
+planner_frequency: 5.0  
 
 #路径规划失败后，尝试重新规划几次后才执行恢复行为，如果设置为-1，代表无限重试
 max_planning_retries: 1  
@@ -48,7 +48,7 @@ clearing_rotation_allowed: false
 conservative_reset_dist: 3.0
 
 #路径规划无法成功多长时间后，执行恢复行为，单位：s
-planner_patience: 5.0  
+planner_patience: 3.0  
 #没有接收到有些控制命令多长时间后，执行恢复行为，单位：s
 controller_patience: 3.0 
 
@@ -74,5 +74,5 @@ recovery_behavior_3:
   #完成该恢复行为机器人必须移动的距离，单位：m
   limited_distance: 0.3  
   #对应的局部路径规划器的名称
-  # planner_namespace: “DWAPlannerROS”
+  #planner_namespace: “DWAPlannerROS”
   planner_namespace: TebLocalPlannerROS

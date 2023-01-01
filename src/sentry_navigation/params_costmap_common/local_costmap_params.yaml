@@ -9,18 +9,18 @@ local_costmap:
   #global_frame和robot_base_frame间的TF坐标停止发布多久后，控制机器人停止，单位：s
   transform_tolerance: 0.5
   #代价地图刷新频率，单位：Hz
-  update_frequency: 30.0
+  update_frequency: 3.0
   #代价地图的可视化话题发布频率，单位：Hz
-  publish_frequency: 30.0
+  publish_frequency: 3.0
 
   #是否直接使用静态地图生成代价地图
-  # static_map: false #使用plugins手动配置代价地图时，该参数无效
+  #static_map: false #使用plugins手动配置代价地图时，该参数无效
   #代价地图是否跟随机器人移动，static_map为true时该参数必须为false
   rolling_window: true
   #代价地图宽度，单位：m
-  width: 4.0 
+  width: 10.0 
   #代价地图高度，单位：m
-  height: 4.0 
+  height: 10.0 
   #代价地图分辨率（米/单元格）
   resolution: 0.05 
 

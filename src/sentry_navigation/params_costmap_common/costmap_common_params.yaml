@@ -15,12 +15,12 @@ static_layer:
   #是否仅把第一次订阅到的地图数据转换为静态层代价地图，无视后续订阅到的地图数据
   first_map_only: false
   #是否订阅话题 “map_topic”+“_updates”
-  subscribe_to_updates: false
+  subscribe_to_updates: true
   #如果设置为false，地图话题中的未知区域在代价地图中会转换为自由区域
-  track_unknown_space: false
+  track_unknown_space: true
   #如果设置为true，静态层代价地图只有未知、自由和完全占用三种情况
   #如果设置为false，静态层代价地图可以有不同的占用程度
-  trinary_costmap: false
+  trinary_costmap: true
 
 
 #设置障碍层参数

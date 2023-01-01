@@ -2,14 +2,14 @@
 
 #局部路径规划器DWAPlannerROS命名空间
 TebLocalPlannerROS:
-  odom_topic: odom_combined #订阅的里程计话题
+  odom_topic: odom #订阅的里程计话题
   map_frame: map #代价地图的TF参考坐标系
 
   #障碍物参数
   min_obstacle_dist: 0.1 #和障碍物最小距离，直接影响机器人避障效果
   include_costmap_obstacles: True #是否将动态障碍物预测为速度模型，
   costmap_obstacles_behind_robot_dist: 1.5 #限制机器人后方规划时考虑的局部成本地图障碍物
-  obstacle_poses_affected: 5  #障碍物姿态受影响0~30
+  obstacle_poses_affected: 15  #障碍物姿态受影响0~30
   costmap_converter_plugin: ""
   costmap_converter_spin_thread: True
   costmap_converter_rate: 5
@@ -25,7 +25,7 @@ TebLocalPlannerROS:
   teb_autosize: True #优化期间允许改变轨迹的时域长度
   dt_ref: 0.45 #局部路径规划的解析度# minimum 0.01
   dt_hysteresis: 0.1 #允许改变的时域解析度的浮动范围， 一般为 dt_ref 的 10% 左右 minimum0.002
-  global_plan_overwrite_orientation: True #覆盖全局路径中局部路径点的朝向
+  global_plan_overwrite_orientation: False #覆盖全局路径中局部路径点的朝向
   max_global_plan_lookahead_dist: 3.0 #考虑优化的全局计划子集的最大长度
   feasibility_check_no_poses: 5 #检测位姿可到达的时间间隔 minimum 0
 
@@ -74,7 +74,7 @@ TebLocalPlannerROS:
   visualize_with_time_as_z_axis_scale: False
 
   #恢复行为
-  shrink_horizon_backup: false
+  shrink_horizon_backup: True
   shrink_horizon_min_duration: 10
   oscillation_recovery: False
   oscillation_v_eps: 0.1
