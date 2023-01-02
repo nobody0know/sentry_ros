@@ -45,7 +45,11 @@ include_directories(
 )
 
 add_executable(simple_robot src/robot_node.cpp src/crc.cpp src/serial_device.cpp)
-add_dependencies(simple_robot ${catkin_EXPORTED_TARGETS} src/robot_node.cpp src/crc.cpp src/serial_device.cpp)
+add_dependencies(simple_robot ${${PROJECT_NAME}_EXPORTTED_TARGETS}
+                                   ${catkin_EXPORTED_TARGETS}
+                                   ${PROJECT_NAME}_generate_messages_cpp
+                                   ${PROJECT_NAME}_gencpp
+                                   )
 target_link_libraries(simple_robot
     ${CMAKE_THREAD_LIBS_INIT}
     ${catkin_LIBRARIES})
