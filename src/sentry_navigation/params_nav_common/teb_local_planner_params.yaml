@@ -2,7 +2,7 @@
 
 #局部路径规划器DWAPlannerROS命名空间
 TebLocalPlannerROS:
-  odom_topic: odom #订阅的里程计话题
+  odom_topic: odom_combined #订阅的里程计话题
   map_frame: map #代价地图的TF参考坐标系
 
   #障碍物参数
