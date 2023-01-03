@@ -6,11 +6,11 @@ TebLocalPlannerROS:
   #机器人参数
   max_vel_x: 1.5 #最大x前向速度，单位：m/s
   max_vel_y: 1.3 #最大y前向速度，单位：m/s，非全向移动小车需要设置为0
-  max_vel_x_backwards: 0.5 #最大后退速度，单位：m/s
-  max_vel_theta: 1.0  #最大转向角速度，单位：rad/s
-  acc_lim_x: 0.3  #最大x向加速度，单位：m/s^2
-  acc_lim_y: 0.2  #最大y向加速度，，单位：m/s^2,非全向移动小车需要设置为0
-  acc_lim_theta: 0.3  #最大角加速度，单位：rad/s^2
+  max_vel_x_backwards: 1.5 #最大后退速度，单位：m/s
+  max_vel_theta: 0.8  #最大转向角速度，单位：rad/s
+  acc_lim_x: 0.5  #最大x向加速度，单位：m/s^2
+  acc_lim_y: 0.5  #最大y向加速度，，单位：m/s^2,非全向移动小车需要设置为0
+  acc_lim_theta: 0.2  #最大角加速度，单位：rad/s^2
 
   #阿克曼小车参数，非阿克曼小车设置为0
   min_turning_radius: 0.0 #机器人最小转弯半径
@@ -40,4 +40,4 @@ TebLocalPlannerROS:
     #vertices: [[-0.133, -0.125],[-0.133, 0.125],[0.133,0.125],[0.133, -0.125]]
 
     type: polygon
-    vertices: [[-0.133, -0.125],[-0.133, 0.125],[0.133,0.125],[0.133, -0.125]] #多边形端点坐标 for mini_mec
+    vertices: [[-0.334, -0.248], [-0.334, 0.248],[0.334,0.248],[0.334, -0.248]] #多边形端点坐标 for mini_mec
