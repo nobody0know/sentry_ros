@@ -8,7 +8,6 @@ Panels:
         - /Grid1
         - /Local Plan1
         - /Global Plan1
-        - /LaserScan2
       Splitter Ratio: 0.6526610255241394
     Tree Height: 675
   - Class: rviz/Selection
@@ -172,8 +171,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.22694692015647888
-        Min Value: 0.18895961344242096
+        Max Value: 0.2049935907125473
+        Min Value: 0.17803911864757538
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -222,14 +221,6 @@ Visualization Manager:
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: true
-    - Class: rviz/Marker
-      Enabled: true
-      Marker Topic: /waypoint_markers
-      Name: Marker
-      Namespaces:
-        {}
-      Queue Size: 100
       Value: true
     - Class: rviz/TF
       Enabled: true
@@ -336,7 +327,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.4181811809539795
+      Distance: 5.121726989746094
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -344,9 +335,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.9857609272003174
-        Y: -0.5930110812187195
-        Z: 1.2863051891326904
+        X: 1.2796838283538818
+        Y: -0.6324021816253662
+        Z: 0.677496075630188
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -372,5 +363,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1432
-  X: 415
+  X: 72
   Y: 27

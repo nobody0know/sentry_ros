@@ -18,13 +18,13 @@ int main(int argc, char** argv)
 
   tf::TransformListener listener;
 
-  ros::Rate rate(25.0);
+  ros::Rate rate(30.0);
   while (node.ok())
   {
     tf::StampedTransform transform;
     try
     {
-      listener.waitForTransform("map", "base_footprint", ros::Time(0), ros::Duration(20.0));
+      listener.waitForTransform("map", "base_footprint", ros::Time(0), ros::Duration(30.0));
       // ros::Time::now()
       listener.lookupTransform("map", "base_footprint", ros::Time(0), transform);
     }
