@@ -6,10 +6,10 @@
 
     <!-- 开启用于导航的自适应蒙特卡洛定位amcl-->
     <include file="$(find sentry_navigation)/launch/amcl.launch" />
-    <!-- <node pkg="sentry_navigation" type="amcl_tf" name="amcl_tf_change"/> -->
+    <node pkg="sentry_navigation" type="amcl_tf" name="amcl_tf_change"/>
 
     <!-- 开启teb_local_planner导航算法 与dwa算法相比效果更佳-->
-  <include file="$(find sentry_navigation)/launch/include/dwa_local_planner.launch">
+  <include file="$(find sentry_navigation)/launch/include/teb_local_planner.launch">
     <arg name="car_mode" value="mini_mec"/>
   </include>
 </launch>

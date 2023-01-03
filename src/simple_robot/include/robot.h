@@ -57,7 +57,7 @@ namespace robomaster
     void navgation_ctrl_callback(const geometry_msgs::Twist &cmd_vel)
     {
       robot_ctrl.vx = cmd_vel.linear.x;
-      robot_ctrl.vy = -cmd_vel.linear.y;
+      robot_ctrl.vy = cmd_vel.linear.y;
       robot_ctrl.vw = cmd_vel.angular.z;
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
@@ -87,7 +87,7 @@ namespace robomaster
       rc_msg_pub_ = nh.advertise<simple_robot::sc_rc_msg>("rc_message", 1);
       chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 100);
       vision_pub_ = nh.advertise<simple_robot::vision>("vision_data", 1);
-      cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &Robot::navgation_ctrl_callback, this);
+      cmd_vel_sub_ = nh.subscribe("cmd_vel", 100, &Robot::navgation_ctrl_callback, this);
       current_time = ros::Time::now();
       last_time = ros::Time::now();
 
