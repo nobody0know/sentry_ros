@@ -6,7 +6,7 @@ TebLocalPlannerROS:
   map_frame: map #代价地图的TF参考坐标系
 
   #障碍物参数
-  min_obstacle_dist: 0.01 #和障碍物最小距离，直接影响机器人避障效果
+  min_obstacle_dist: 0.2 #和障碍物最小距离，直接影响机器人避障效果
   include_costmap_obstacles: True #是否将动态障碍物预测为速度模型，
   costmap_obstacles_behind_robot_dist: 1.5 #限制机器人后方规划时考虑的局部成本地图障碍物
   obstacle_poses_affected: 5  #障碍物姿态受影响0~30
@@ -38,22 +38,22 @@ TebLocalPlannerROS:
   obstacle_cost_exponent: 4  
   weight_max_vel_x: 2 #最大x速度权重
   weight_max_vel_theta: 1 #最大角速度权重
-  weight_acc_lim_x: 1 #最大x 加速度权重
+  weight_acc_lim_x: 2 #最大x 加速度权重
   weight_acc_lim_theta: 1  #最大角加速度权重
   weight_kinematics_nh: 1000  #Optimization weight for satisfying the non-holonomic kinematics
-  weight_kinematics_forward_drive: 1 #优化过程中，迫使机器人只选择前进方向，差速轮适用
+  weight_kinematics_forward_drive: 10 #优化过程中，迫使机器人只选择前进方向，差速轮适用
   weight_kinematics_turning_radius: 1 #优化过程中，车型机器人的最小转弯半径的权重
   weight_optimaltime: 1 #必须大于0,优化过程中，基于轨迹的时间上的权重
   weight_shortest_path: 0
-  weight_obstacle: 100 #优化过程中，和障碍物最小距离的权重
+  weight_obstacle: 30 #优化过程中，和障碍物最小距离的权重
   weight_inflation: 0.2 #优化过程中， 膨胀区的权重
-  weight_dynamic_obstacle: 10 #优化过程中，和动态障碍物最小距离的权重
+  weight_dynamic_obstacle: 5 #优化过程中，和动态障碍物最小距离的权重
   weight_dynamic_obstacle_inflation: 0.2 #优化过程中，和动态障碍物膨胀区的权重
   weight_viapoint: 1 #优化过程中，和全局路径采样点距离的权重
   weight_adapt_factor: 2
 
   #不同拓扑中的并行规划
-  enable_homotopy_class_planning: False
+  enable_homotopy_class_planning: true
   enable_multithreading: True #允许多线程并行处理
   max_number_classes: 8 #允许的线程数
   selection_cost_hysteresis: 1.0
