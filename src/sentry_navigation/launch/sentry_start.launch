@@ -9,8 +9,6 @@
 
     <include file="$(find lakibeam1)/launch/lakibeam1_scan.launch"/>
 
-    <include file="$(find robot_pose_ekf)/robot_pose_ekf.launch"/>
-
     <include file="$(find sentry_navigation)/launch/laser_filter.launch"/>
 
       <!-- 发布用于建图、导航的TF关系与小车外形可视化 -->

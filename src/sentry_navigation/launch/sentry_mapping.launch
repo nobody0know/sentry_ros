@@ -1,6 +1,7 @@
 <launch>
     <include file="$(find sentry_navigation)/launch/sentry_start.launch" />
 
+    <include file="$(find robot_pose_ekf)/robot_pose_ekf.launch"/>
     <!-- 开启gmapping建图算法  -->
     <include file="$(find sentry_navigation)/launch/algorithm_gmapping.launch" />
 

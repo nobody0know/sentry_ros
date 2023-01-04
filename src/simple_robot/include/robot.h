@@ -271,8 +271,8 @@ namespace robomaster
           current_time = ros::Time::now();
 
           float dt = (current_time - last_time).toSec();
-          chassis_odom_pose.x_pos += (chassis_odom_info_.vx * cos(chassis_odom_info_.vw) - chassis_odom_info_.vy * sin(chassis_odom_info_.vw)) * dt;
-          chassis_odom_pose.y_pos += (chassis_odom_info_.vx * sin(chassis_odom_info_.vw) + chassis_odom_info_.vy * cos(chassis_odom_info_.vw)) * dt;
+          chassis_odom_pose.x_pos += (chassis_odom_info_.vx * cos(chassis_odom_pose.z_pos) - chassis_odom_info_.vy * sin(chassis_odom_pose.z_pos)) * dt;
+          chassis_odom_pose.y_pos += (chassis_odom_info_.vx * sin(chassis_odom_pose.z_pos) + chassis_odom_info_.vy * cos(chassis_odom_pose.z_pos)) * dt;
           chassis_odom_pose.z_pos += chassis_odom_info_.vw * dt;
           //      因为里程计使用麦轮解算得到,无需里程计到base_footprint的tf变换,直接从融合算法ekf发布tf变换即可
           geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom_pose.z_pos);

@@ -1,5 +1,9 @@
 <launch>
     <include file="$(find sentry_navigation)/launch/sentry_start.launch" />
+
+    <include file="$(find sentry_navigation)/launch/robot_pose_ekf.launch" />
+    <!-- <include file="$(find sentry_navigation)/launch/robot_localization.launch"/> -->
+
     <!-- 设置需要用于导航的地图  -->
     <arg name="map_file" default="$(find sentry_navigation)/map/map.yaml"/>
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"></node>

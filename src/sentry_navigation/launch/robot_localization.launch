@@ -1,0 +1,7 @@
+<launch>
+<node pkg="robot_localization" type="ekf_localization_node"
+      name="robot_localization_ekf_node"
+      clear_params="true">
+      <rosparam command="load" file="$(find sentry_navigation)/config/ekf.yaml" />
+</node>
+</launch>
