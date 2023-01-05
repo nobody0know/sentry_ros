@@ -6,7 +6,7 @@ GlobalPlanner:
   use_dijkstra: false
 
   #是否使用二次逼近法进行计算，false则使用更简单的计算方法
-  use_quadratic: false
+  use_quadratic: true
 
   #如果出于某种原因，您想要global_planner精确地反映navfn的行为，则将其设置为true(并为其他布尔参数使用默认值)                                
   old_navfn_behavior: false

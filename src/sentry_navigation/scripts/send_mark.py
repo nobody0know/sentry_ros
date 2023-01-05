@@ -307,8 +307,8 @@ def send_mark():
             markerArray = MarkerArray() 
             markerArray_number = MarkerArray() 
 
-        elif (key == '\x03' or key == 'q' ): #ctrl+c退出
-            break
+        elif (key == '\x03' or key == 'q' or rospy.is_shutdown()): #ctrl+c退出
+            break  
 def breakkey():
     fd = sys.stdin.fileno()
     new_settings = termios.tcgetattr(fd)

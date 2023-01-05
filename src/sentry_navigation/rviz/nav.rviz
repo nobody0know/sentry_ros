@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Local Plan1
         - /Global Plan1
+        - /LaserScan1
         - /TF1/Frames1
         - /MarkerArray1
       Splitter Ratio: 0.6526610255241394
@@ -28,7 +29,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: LaserScan
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -159,7 +160,7 @@ Visualization Manager:
       Axes Radius: 0.009999999776482582
       Class: rviz/PoseArray
       Color: 170; 255; 127
-      Enabled: false
+      Enabled: true
       Head Length: 0.07000000029802322
       Head Radius: 0.029999999329447746
       Name: Pose Array
@@ -169,14 +170,14 @@ Visualization Manager:
       Shape: Arrow (Flat)
       Topic: /particlecloud
       Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.20877663791179657
-        Min Value: 0.19666790962219238
+        Max Value: 11.57036304473877
+        Min Value: -2.028090238571167
         Value: true
-      Axis: Z
+      Axis: X
       Channel Name: intensity
       Class: rviz/LaserScan
       Color: 255; 0; 0
@@ -243,6 +244,10 @@ Visualization Manager:
           Value: false
         left_wheel_link:
           Value: false
+        map:
+          Value: true
+        odom_combined:
+          Value: true
         right_front_link:
           Value: false
         right_wheel_link:
@@ -254,7 +259,24 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        map:
+          odom_combined:
+            base_footprint:
+              base_link:
+                left_front_link:
+                  {}
+                left_wheel_link:
+                  {}
+                right_front_link:
+                  {}
+                right_wheel_link:
+                  {}
+              camera_link:
+                {}
+              gyro_link:
+                {}
+              laser:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -321,7 +343,7 @@ Visualization Manager:
       Marker Topic: /path_point
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -350,7 +372,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.667682647705078
+      Distance: 9.460430145263672
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
