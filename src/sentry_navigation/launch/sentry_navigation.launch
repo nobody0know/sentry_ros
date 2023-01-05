@@ -14,6 +14,9 @@
 
     <!-- 开启teb_local_planner导航算法 与dwa算法相比效果更佳-->
   <include file="$(find sentry_navigation)/launch/include/teb_local_planner.launch">
-    <arg name="car_mode" value="mini_mec"/>
-  </include>
+    <arg name="car_mode" value="mini_mec"/> </include>
+
+   <!-- MarkerArray功能节点> -->
+  <node name='send_mark' pkg="sentry_navigation" type="send_mark.py">
+  </node>
 </launch>

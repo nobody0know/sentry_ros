@@ -8,6 +8,7 @@ Panels:
         - /Local Plan1
         - /Global Plan1
         - /TF1/Frames1
+        - /MarkerArray1
       Splitter Ratio: 0.6526610255241394
     Tree Height: 675
   - Class: rviz/Selection
@@ -16,6 +17,7 @@ Panels:
     Expanded:
       - /2D Pose Estimate1
       - /2D Nav Goal1
+      - /Publish Point1
     Name: Tool Properties
     Splitter Ratio: 0.4285709857940674
   - Class: rviz/Views
@@ -26,7 +28,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -241,10 +243,6 @@ Visualization Manager:
           Value: false
         left_wheel_link:
           Value: false
-        map:
-          Value: true
-        odom_combined:
-          Value: true
         right_front_link:
           Value: false
         right_wheel_link:
@@ -256,24 +254,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom_combined:
-            base_footprint:
-              base_link:
-                left_front_link:
-                  {}
-                left_wheel_link:
-                  {}
-                right_front_link:
-                  {}
-                right_wheel_link:
-                  {}
-              camera_link:
-                {}
-              gyro_link:
-                {}
-              laser:
-                {}
+        {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -335,6 +316,14 @@ Visualization Manager:
       Topic: /robot_pose_ekf/odom_combined
       Unreliable: false
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /path_point
+      Name: MarkerArray
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -354,11 +343,14 @@ Visualization Manager:
       Y std deviation: 0.5
     - Class: rviz/SetGoal
       Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
   Value: true
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 9.319650650024414
+      Distance: 8.667682647705078
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -366,17 +358,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.552753210067749
-        Y: -0.31530383229255676
-        Z: -0.2500494122505188
+        X: 2.3713037967681885
+        Y: -0.6802506446838379
+        Z: 0.5498736500740051
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0647963285446167
+      Pitch: 1.1597963571548462
       Target Frame: <Fixed Frame>
-      Yaw: 3.153179407119751
+      Yaw: 3.0881786346435547
     Saved: ~
 Window Geometry:
   Displays:

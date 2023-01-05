@@ -62,7 +62,7 @@ namespace robomaster
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
       device_ptr_->Write(send_buff_.get(), send_length);
-      ROS_INFO("Sending nav_ctrl msg");
+      // ROS_INFO("Sending nav_ctrl msg");
     }
 
     // void robot_ctrl_callback(const simple_robot::robot_ctrl::ConstPtr &msg)
