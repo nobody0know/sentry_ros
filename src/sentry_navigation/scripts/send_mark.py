@@ -307,7 +307,7 @@ def send_mark():
             markerArray = MarkerArray() 
             markerArray_number = MarkerArray() 
 
-        elif (key == '\x03'): #ctrl+c退出
+        elif (key == '\x03' or key == 'q' ): #ctrl+c退出
             break
 def breakkey():
     fd = sys.stdin.fileno()

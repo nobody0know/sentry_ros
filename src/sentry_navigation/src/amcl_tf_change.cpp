@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 
   tf::TransformListener listener;
 
-  ros::Rate rate(30.0);
+  ros::Rate rate(10.0);
   while (node.ok())
   {
     tf::StampedTransform transform;

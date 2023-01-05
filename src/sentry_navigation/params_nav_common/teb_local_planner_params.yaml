@@ -17,9 +17,9 @@ TebLocalPlannerROS:
   dynamic_obstacle_inflation_dist: 0.6
 
   #目标点误差允许值
-  xy_goal_tolerance: 0.3  #机器人到达目标点时附近时的弧度偏差允许量，在该偏差内认为已经到达目标点，单位为：m
+  xy_goal_tolerance: 0.5 #机器人到达目标点时附近时的弧度偏差允许量，在该偏差内认为已经到达目标点，单位为：m
   yaw_goal_tolerance: 0.5 #机器人到达目标点时附近时的弧度偏差允许量，在该偏差内认为已经到达目标点单位为：rad
-  free_goal_vel: false    #允许机器人以最大速度驶向目的地
+  free_goal_vel: true    #允许机器人以最大速度驶向目的地
 
   #轨道配置参数
   teb_autosize: True #优化期间允许改变轨迹的时域长度
@@ -27,7 +27,7 @@ TebLocalPlannerROS:
   dt_hysteresis: 0.1 #允许改变的时域解析度的浮动范围， 一般为 dt_ref 的 10% 左右 minimum0.002
   global_plan_overwrite_orientation: true #覆盖全局路径中局部路径点的朝向
   max_global_plan_lookahead_dist: 3.0 #考虑优化的全局计划子集的最大长度
-  feasibility_check_no_poses: 5 #检测位姿可到达的时间间隔 minimum 0
+  feasibility_check_no_poses: 0 #检测位姿可到达的时间间隔 minimum 0
 
   #轨迹优化参数
   no_inner_iterations: 5 #被外循环调用后内循环执行优化次数

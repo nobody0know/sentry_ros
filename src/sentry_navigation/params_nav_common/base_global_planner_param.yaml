@@ -35,4 +35,4 @@ GlobalPlanner:
   #What window to use to determine the orientation based on the position derivative specified by the orientation mode
   orientation_window_size: 1
   #用完全占用方格勾勒出全局代价地图。对于“非static_map”(rolling_window)的全局代价地图，需要将其设置为false
-  outline_map: true
+  outline_map: false
