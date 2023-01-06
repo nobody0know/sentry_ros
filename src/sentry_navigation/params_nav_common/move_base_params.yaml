@@ -14,13 +14,13 @@ base_local_planner: "teb_local_planner/TebLocalPlannerROS"
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!全局规划频率需小于控制发送频率!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #发布机器人速度控制命令话题cmd_vel的频率，单位：Hz
-controller_frequency: 3.0 
+controller_frequency: 10.0 
 
 #全局路径规划器的规划频率，如果设置为0，仅在设置目标点位置时执行一次，单位：Hz
 planner_frequency: 2.0  
 
 #路径规划失败后，尝试重新规划几次后才执行恢复行为，如果设置为-1，代表无限重试
-max_planning_retries: 3  
+max_planning_retries: 1  
 
 #当move_base在不活动状态时,是否关掉代价地图的更新
 shutdown_costmaps: false  
@@ -49,14 +49,14 @@ clearing_rotation_allowed: false
 conservative_reset_dist: 3.0
 
 #路径规划无法成功多长时间后，执行恢复行为，单位：s
-planner_patience: 5.0  
+planner_patience: 3.0  
 #没有接收到有些控制命令多长时间后，执行恢复行为，单位：s
 controller_patience: 3.0 
 
 #当机器人在运动，但是运动幅度不大于多少时，认为机器人处于振荡状态，单位：m
 oscillation_distance: 0.02  
 #机器人处于振荡状态多久后，执行恢复行为，单位：s
-oscillation_timeout: 5.0 
+oscillation_timeout: 10.0 
 
 #设置恢复行为参数
 recovery_behavior_1:
