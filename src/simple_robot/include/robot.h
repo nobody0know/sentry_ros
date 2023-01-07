@@ -86,7 +86,7 @@ namespace robomaster
       // robot_ctrl_sub_=nh.subscribe("robot_ctrl",1,&Robot::robot_ctrl_callback,this);
       rc_msg_pub_ = nh.advertise<simple_robot::sc_rc_msg>("rc_message", 1);
       chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 100);
-      vision_pub_ = nh.advertise<simple_robot::vision>("vision_data", 1);
+      vision_pub_ = nh.advertise<simple_robot::vision>("vision_data", 10);
       cmd_vel_sub_ = nh.subscribe("cmd_vel", 10, &Robot::navgation_ctrl_callback, this);
       current_time = ros::Time::now();
       last_time = ros::Time::now();

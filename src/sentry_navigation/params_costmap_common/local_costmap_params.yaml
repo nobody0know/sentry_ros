@@ -18,9 +18,9 @@ local_costmap:
   #代价地图是否跟随机器人移动，static_map为true时该参数必须为false
   rolling_window: true
   #代价地图宽度，单位：m
-  width: 5.0 
+  width: 8.0 
   #代价地图高度，单位：m
-  height: 5.0 
+  height: 8.0 
   #代价地图分辨率（米/单元格）
   resolution: 0.05 
 
