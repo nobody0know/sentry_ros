@@ -5,4 +5,5 @@
     <!-- 开启gmapping建图算法  -->
     <!-- <include file="$(find sentry_navigation)/launch/algorithm_gmapping.launch" /> -->
 
+    <include file="$(find cartographer_ros)/launch/demo_revo_lds.launch" />
 </launch>
