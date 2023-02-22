@@ -69,6 +69,8 @@ namespace robomaster
     {
       robot_ctrl.pitch = msg->pitch;
       robot_ctrl.yaw = msg->yaw;
+      robot_ctrl.target_lock = msg->target_lock;
+      robot_ctrl.fire_command = msg->fire_command;
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
       device_ptr_->Write(send_buff_.get(), send_length);

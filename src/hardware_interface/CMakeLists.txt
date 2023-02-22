@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
   geometry_msgs
+  robot_msgs
 )
 
 ## Generate messages in the 'msg' folder
@@ -17,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 catkin_package(
-  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime robot_msgs
 )
 
 ###########

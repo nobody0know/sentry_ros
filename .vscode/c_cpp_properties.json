@@ -10,8 +10,8 @@
         "./src/hardware_interface/include/**",
         "./src/simple_robot/include/**",
         "./src/sentry_navigation/include/**",
-        "/usr/include/**",
-        "./include/**"
+        "./devel/include/robot_msgs/**",
+        "/usr/include/**"
       ],
       "name": "ROS",
       "intelliSenseMode": "gcc-x64",
