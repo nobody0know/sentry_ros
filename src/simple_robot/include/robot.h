@@ -85,7 +85,7 @@ namespace robomaster
       robot_ctrl_sub_=nh.subscribe("robot_ctrl",1,&Robot::robot_ctrl_callback,this);
       rc_msg_pub_ = nh.advertise<robot_msgs::sc_rc_msg>("rc_message", 1);
       chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 100);
-      vision_pub_ = nh.advertise<robot_msgs::vision>("vision_data", 10);
+      vision_pub_ = nh.advertise<robot_msgs::vision>("vision_data", 100);
       cmd_vel_sub_ = nh.subscribe("cmd_vel", 10, &Robot::navgation_ctrl_callback, this);
       current_time = ros::Time::now();
       last_time = ros::Time::now();
@@ -328,17 +328,22 @@ namespace robomaster
         break;
         case VISION_ID:
         {
-          // ROS_INFO("VISION info");
+          ROS_INFO("VISION info");
           memcpy(&vision_msg_, frame + index, sizeof(vision_t));
           vision_pubmsg.header.frame_id = "euler";
           vision_pubmsg.header.seq++;
           vision_pubmsg.header.stamp = ros::Time::now();
           vision_pubmsg.id = vision_msg_.id;
+          vision_pubmsg.yaw = vision_msg_.yaw;
           vision_pubmsg.pitch = vision_msg_.pitch;
           vision_pubmsg.roll = vision_msg_.roll;
           vision_pubmsg.shoot = vision_msg_.shoot;
           vision_pubmsg.shoot_sta = vision_msg_.shoot_sta;
-          vision_pubmsg.yaw = vision_msg_.yaw;
+          vision_pubmsg.quaternion.resize(4);//设置自定义消息数组的长度
+          for (int i = 0; i < 4; i++)
+          {
+            vision_pubmsg.quaternion[i] = vision_msg_.quaternion[i];
+          }
           vision_pub_.publish(vision_pubmsg);
         }
         break;

@@ -94,6 +94,7 @@ typedef struct
   float pitch=0;
   float yaw=0;
   float roll=0;
+  float quaternion[4]={0};
   float shoot=0;
 } vision_t;
 
