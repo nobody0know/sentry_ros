@@ -328,7 +328,7 @@ namespace robomaster
         break;
         case VISION_ID:
         {
-          ROS_INFO("VISION info");
+          // ROS_INFO("VISION info");
           memcpy(&vision_msg_, frame + index, sizeof(vision_t));
           vision_pubmsg.header.frame_id = "euler";
           vision_pubmsg.header.seq++;
