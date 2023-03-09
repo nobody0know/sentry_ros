@@ -1,26 +1,45 @@
 <launch>
-<arg name="scan_topic" default="scan"/>
+<arg name="scan_topic" default="scan_filtered"/>
     <node pkg="amcl" type="amcl" name="amcl" output="screen">
         <remap from="scan" to="scan_filtered"/>
 
         <!-- Overall filter parameters -->
-        <param name="min_particles" value="500"/>
-        <param name="max_particles" value="2000"/>
-        <param name="kld_err" value="0.05"/>
+        <!-- 允许的粒子数量的最小值，默认100 -->
+        <param name="min_particles" value="1000"/> 
+        <!-- 允许的例子数量的最大值，默认5000   -->
+        <param name="max_particles" value="5000"/>
+        <!-- 真实分布和估计分布之间的最大误差，默认0.01 -->
+        <param name="kld_err" value="0.5"/>
+        <!-- 上标准分位数（1-p），其中p是估计分布上误差小于kld_err的概率，默认0.99 -->
         <param name="kld_z" value="0.99"/>
-        <param name="update_min_d" value="0.25"/> <!-- Translational movement required before performing a filter update. -->
-        <param name="update_min_a" value="0.2"/> <!-- Rotational movement required before performing a filter update. 0.1 represents 5.7 degrees  -->
-        <param name="resample_interval" value="1"/> <!-- Number of filter updates required before resampling. -->
-        <param name="transform_tolerance" value="0.1"/> <!-- Default 0.1; time with which to post-date the transform that is published, to indicate that this transform is valid into the future. -->
-        <param name="recovery_alpha_slow" value="0.001"/> <!-- Exponential decay rate for the slow average weight filter, used in deciding when to recover by adding random poses. -->
-        <param name="recovery_alpha_fast" value="0.1"/> <!-- Exponential decay rate for the fast average weight filter, used in deciding when to recover by adding random poses. -->
-        <param name="gui_publish_rate" value="10.0"/> <!-- Maximum rate (Hz) at which scans and paths are published for visualization, -1.0 to disable. -->
-        <param name="save_pose_rate"   value="0.3"/>
-        <param name="use_map_topic"    value="false"/>
+        <!-- 在执行滤波更新前平移运动的距离，默认0.2m -->
+        <!-- (对于里程计模型有影响，模型中根据运动和地图求最终位姿的释然时丢弃了路径中的相关所有信息， -->
+        <!-- 已知的只有最终位姿，为了规避不合理的穿过障碍物后的非零似然，这个值建议不大于机器人半径。 -->
+        <!-- 否则因更新频率的不同可能产生完全不同的结果) -->
+        <param name="update_min_d" value="0.25"/> 
+        <!-- 执行滤波更新前旋转的角度，默认pi/6 rad -->
+        <param name="update_min_a" value="0.2"/> 
+        <!-- 在重采样前需要的滤波更新的次数,默认2 -->
+        <param name="resample_interval" value="2"/> 
+        <!-- tf变换发布推迟的时间，为了说明tf变换在未来时间内是可用的 -->
+        <param name="transform_tolerance" value="0.1"/> 
+        <!-- 慢速的平均权重滤波的指数衰减频率，用作决定什么时候通过增加随机位姿来recover，默认0（disable），可能0.001是一个不错的值 -->
+        <param name="recovery_alpha_slow" value="0.001"/> 
+        <!-- 快速的平均权重滤波的指数衰减频率，用作决定什么时候通过增加随机位姿来recover，默认0（disable），可能0.1是个不错的值 -->
+        <param name="recovery_alpha_fast" value="0.01"/> 
+        <!-- 扫描和路径发布到可视化软件的最大频率，设置参数为-1.0意为失能此功能，默认-1.0 -->
+        <param name="gui_publish_rate" value="10.0"/> 
+        <!-- 存储上一次估计的位姿和协方差到参数服务器的最大速率。被保存的位姿将会用在连续的运动上来初始化滤波器。-1.0失能。 -->
+        <param name="save_pose_rate"   value="3"/>
+        <!-- 当设置为true时，AMCL将会订阅map话题，而不是调用服务返回地图。
+             也就是说，当设置为true时，有另外一个节点实时的发布map话题，也就是机器人在实时的进行地图构建，
+             并供给amcl话题使用；当设置为false时，通过map server，也就是调用已经构建完成的地图 -->
+        <param name="use_map_topic"    value="true"/>
+        <!-- 当设置为true时，AMCL将仅仅使用订阅的第一个地图，而不是每次接收到新的时更新为一个新的地图 -->
         <param name="first_map_only"   value="false"/>
 
         <!-- set particles init pose to robot pose -->
-        <param name="initial_pose_x" value="0.0"/> <!-- -0.5 -->
+        <param name="initial_pose_x" value="0.0"/> 
         <param name="initial_pose_y" value="0.0"/>
         <param name="initial_pose_a" value="0.0"/>
         <param name="initial_cov_xx" value="0.0"/>
@@ -29,27 +48,53 @@
 
         <!-- Laser model parameters -->
 	<remap from="scan" to="$(arg scan_topic)"/>
+        <!-- 被考虑的最小扫描范围；参数设置为-1.0时，将会使用激光上报的最小扫描范围 -->
 	    <param name="laser_min_range" value="-1" />
-	    <param name="laser_max_range" value="12" />
-        <param name="laser_max_beams" value="60"/>	
-        <param name="laser_z_hit" value="0.5"/>
-        <param name="laser_z_short" value="0.05"/>
-        <param name="laser_z_max" value="0.05"/>
-        <param name="laser_z_rand" value="0.5"/>
+        <!-- 被考虑的最大扫描范围；参数设置为-1.0时，将会使用激光上报的最大扫描范围 -->
+	    <param name="laser_max_range" value="-1" />
+        <!-- 更新滤波器时，每次扫描中多少个等间距的光束被使用（减小计算量，测距扫描中相邻波束往往不是独立的可以减小噪声影响，太小也会造成信息量少定位不准） -->
+        <param name="laser_max_beams" value="30"/>	
+        <!--这4个laser_z参数，在动态环境下的定位时用于异常值去除技术
+            这种定位思想是环境中的动态物体总是会获得比静态地图障碍物更短的读数（人在障碍物后面是扫描不到的-假如不考虑体积，比如单个激光光束不用考虑体积），
+            利用这样的不对称性去除异常值
+            缺点是：在其他可改变环境的其他类型情景（如去除障碍物）时，这样的非对称性可能不存在，但相同概率分析通常是可适用的。
+            因为每一个异常值都被舍弃了，缺少对称性的缺点可能是从全局定位失效中恢复变得不可能。 -->
+
+        <!-- 模型的z_hit部分的混合权值，默认0.95
+             (混合权重1.具有局部测量噪声的正确范围-以测量距离近似真实距离为均值，其后laser_sigma_hit为标准偏差的高斯分布的权重) -->
+        <param name="laser_z_hit" value="0.95"/>
+        <!-- 模型的z_short(xxx)部分的混合权值，默认0.1,0.05,0.05 -->
+        <param name="laser_z_short" value="0.1"/>
+        <param name="laser_z_max" value="0.1"/>
+        <param name="laser_z_rand" value="0.1"/>
+        <!-- 被用在模型的z_hit部分的高斯模型的标准差，默认0.2m -->
         <param name="laser_sigma_hit" value="0.2"/>
+        <!-- 模型z_short部分的指数衰减参数，默认0.1 -->
         <param name="laser_lambda_short" value="0.1"/>
+        <!-- 地图上做障碍物膨胀的最大距离，用作likelihood_field模型 -->
         <param name="laser_likelihood_max_dist" value="2.0"/>
-        <param name="laser_model_type" value="likelihood_field"/>
+        <!-- 模型使用，可以是beam, likehood_field, likehood_field_prob（和likehood_field一样但是融合了beamskip特征-官网的注释） -->
+        <param name="laser_model_type" value="likelihood_field_prob"/>
 
         <!-- Odometry model parameters -->
-        <param name="odom_model_type" value="omni-corrected"/>
-        <param name="odom_alpha1" value="0.2"/> <!-- Specifies the expected noise in odometry's rotation estimate from the rotational component of the robot's motion. -->
-        <param name="odom_alpha2" value="0.2"/> <!-- Specifies the expected noise in odometry's rotation estimate from translational component of the robot's motion. -->
-        <param name="odom_alpha3" value="0.2"/> <!-- Specifies the expected noise in odometry's translation estimate from the translational component of the robot's motion. -->
-        <param name="odom_alpha4" value="0.2"/> <!-- Specifies the expected noise in odometry's translation estimate from the rotational component of the robot's motion. -->
-        <param name="odom_alpha5" value="0.1"/> <!--only used if model is "omni"-->
+        <!--×××里程计模型并没有涉及机器人漂移或打滑的情况，一旦出现这样的情况，后续定位基本废了，
+        虽然Augmented_MCL有失效恢复，但是实际运行中耗时太长且结果不太理想（位置居然跳，这很不合理，可能参数配置不太好）-->
+
+        <!-- 模型使用，可以是"diff", "omni", "diff-corrected", "omni-corrected",后面两个是对老版本里程计模型的矫正，相应的里程计参数需要做一定的减小 -->
+        <param name="odom_model_type" value="omni"/>
+        <!-- 指定由机器人运动部分的旋转分量估计的里程计旋转的期望噪声，默认0.2（旋转存在旋转噪声） -->
+        <param name="odom_alpha1" value="0.3"/> 
+        <!-- //制定由机器人运动部分的平移分量估计的里程计旋转的期望噪声，默认0.2（旋转中可能出现平移噪声） -->
+        <param name="odom_alpha2" value="0.2"/> 
+        <!-- 指定由机器人运动部分的平移分量估计的里程计平移的期望噪声，默认0.2（类似上） -->
+        <param name="odom_alpha3" value="0.1"/> 
+        <!-- 指定由机器人运动部分的旋转分量估计的里程计平移的期望噪声，默认0.2（类似上） -->
+        <param name="odom_alpha4" value="0.5"/> 
+        <!-- 平移相关的噪声参数（仅用于模型是“omni”的情况-wiki官网的注释） -->
+        <param name="odom_alpha5" value="0.5"/> 
+
         <param name="odom_frame_id" value="odom_combined"/>
-        <param name="base_frame_id" value="base_footprint"/> <!-- Change this if you want to change your base frame id. -->
+        <param name="base_frame_id" value="base_footprint"/> 
         <param name="global_frame_id" value="map"/>
 	    <param name="tf_broadcast"    value="true"/>
     </node>

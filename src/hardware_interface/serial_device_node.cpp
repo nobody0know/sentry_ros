@@ -91,31 +91,22 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include<unistd.h>
+#include"robot_msgs/robot_ctrl.h"
 using namespace std;
 int main(int argc,char** argv)
 {
-    ros::init(argc, argv, "cmdveltest");
+    ros::init(argc, argv, "msgstest");
      ros::NodeHandle cmdh;
-    ros::Publisher cmdpub= cmdh.advertise<geometry_msgs::Twist>("cmd_vel", 1, true);
+    ros::Publisher cmdpub = cmdh.advertise<robot_msgs::robot_ctrl>("robot_ctrl", 1, true);
     ros::Rate r(60);
     while(1){
-        geometry_msgs::Twist twist;
-        geometry_msgs::Vector3 linear;
-        linear.x=30;
-        linear.y=10;
-        linear.z=0;
-        geometry_msgs::Vector3 angular;
-        angular.x=0;
-        angular.y=0;
-        //直行
-        //angular.z=0;
-        //转圈
-        angular.z=-0.5;
-        twist.linear=linear;
-        twist.angular=angular;
-
+        robot_msgs::robot_ctrl twist;
+        twist.yaw = 3;
+        twist.pitch = 2;
+        twist.target_lock = 1;
+        twist.fire_command = 1;
         cmdpub.publish(twist);
-        cout<<"hello"<<endl;
+        cout<<"send robot_ctrl msgs"<<endl;
        // ros::spinOnce();
         //r.sleep();
         sleep(1);

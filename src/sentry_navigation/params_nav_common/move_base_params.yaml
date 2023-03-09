@@ -12,11 +12,12 @@ base_global_planner: "global_planner/GlobalPlanner"
 #base_local_planner: "dwa_local_planner/DWAPlannerROS"
 base_local_planner: "teb_local_planner/TebLocalPlannerROS"
 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!全局规划频率需小于控制发送频率!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #发布机器人速度控制命令话题cmd_vel的频率，单位：Hz
-controller_frequency: 5.0 
+controller_frequency: 10.0 
 
 #全局路径规划器的规划频率，如果设置为0，仅在设置目标点位置时执行一次，单位：Hz
-planner_frequency: 5.0  
+planner_frequency: 2.0  
 
 #路径规划失败后，尝试重新规划几次后才执行恢复行为，如果设置为-1，代表无限重试
 max_planning_retries: 1  
@@ -40,7 +41,7 @@ recovery_behaviors:
     type: 'move_slow_and_clear/MoveSlowAndClear'  
  
 #是否开启恢复行为，这里选择不开启，因为经测试恢复行为用处不大，开启后比较浪费时间。
-recovery_behavior_enabled: false 
+recovery_behavior_enabled: true 
 #是否开启恢复行为中控制机器人旋转的恢复行为。注意，此参数仅在move_base使用默认恢复行为时使用。
 clearing_rotation_allowed: false 
 
@@ -68,9 +69,9 @@ recovery_behavior_3:
   #与机器人距离1米外的障碍物会被清除
   clearing_distance: 5.0
   #限制恢复行为时机器人的线速度，单位：m/s
-  limited_trans_speed: 0.1  
+  limited_trans_speed: 1  
   #限制恢复行为时机器人的角速度，单位：rad/s
-  limited_rot_speed: 0.4  
+  limited_rot_speed: 0.6  
   #完成该恢复行为机器人必须移动的距离，单位：m
   limited_distance: 0.3  
   #对应的局部路径规划器的名称

@@ -141,20 +141,22 @@ add_library(amcl_tf_change
 add_executable(chassis_odom src/chassis_odom.cpp)
 add_executable(deliver src/deliver.cpp)
 add_executable(amcl_tf src/amcl_tf_change.cpp)
+add_executable(mode_control src/nav_mode_control.cpp)
 
 target_link_libraries(chassis_odom
   ${catkin_LIBRARIES}
   odom
 )
-
 target_link_libraries(deliver
   ${catkin_LIBRARIES}
   amcl_global_estimate
 )
-
 target_link_libraries(amcl_tf
   ${catkin_LIBRARIES}
   amcl_tf_change
+)
+target_link_libraries(mode_control
+  ${catkin_LIBRARIES}
 )
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

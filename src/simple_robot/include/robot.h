@@ -10,9 +10,9 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Int8.h"
 
-#include "simple_robot/sc_rc_msg.h"
-#include "simple_robot/robot_ctrl.h"
-#include "simple_robot/vision.h"
+#include "robot_msgs/sc_rc_msg.h"
+#include "robot_msgs/robot_ctrl.h"
+#include "robot_msgs/vision.h"
 #include <thread>
 #include <tf/tf.h>
 #include <tf/transform_broadcaster.h>
@@ -57,37 +57,36 @@ namespace robomaster
     void navgation_ctrl_callback(const geometry_msgs::Twist &cmd_vel)
     {
       robot_ctrl.vx = cmd_vel.linear.x;
-      robot_ctrl.vy = -cmd_vel.linear.y;
+      robot_ctrl.vy = cmd_vel.linear.y;
       robot_ctrl.vw = cmd_vel.angular.z;
       uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
                                              CHASSIS_CTRL_CMD_ID, send_buff_.get());
       device_ptr_->Write(send_buff_.get(), send_length);
-      ROS_INFO("Sending nav_ctrl msg");
+      // ROS_INFO("Sending nav_ctrl msg");
     }
 
-    // void robot_ctrl_callback(const simple_robot::robot_ctrl::ConstPtr &msg)
-    // {
-    //   robot_ctrl.vx = msg->vx;
-    //   robot_ctrl.vy = msg->vy;
-    //   robot_ctrl.vw = msg->vw;
-    //   robot_ctrl.pitch = msg->pitch;
-    //   robot_ctrl.yaw = msg->yaw;
-    //   uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
-    //                                          CHASSIS_CTRL_CMD_ID, send_buff_.get());
-    //   device_ptr_->Write(send_buff_.get(), send_length);
-    //   ROS_INFO("Sending robot_ctrl msg");
-    // }
+    void robot_ctrl_callback(const robot_msgs::robot_ctrl::ConstPtr &msg)
+    {
+      robot_ctrl.pitch = msg->pitch;
+      robot_ctrl.yaw = msg->yaw;
+      robot_ctrl.target_lock = msg->target_lock;
+      robot_ctrl.fire_command = msg->fire_command;
+      uint16_t send_length = SenderPackSolve((uint8_t *)&robot_ctrl, sizeof(robot_ctrl_info_t),
+                                             CHASSIS_CTRL_CMD_ID, send_buff_.get());
+      device_ptr_->Write(send_buff_.get(), send_length);
+      ROS_INFO("Sending robot_ctrl msg");
+    }
 
   private:
     bool ROSInit()
     {
       ros::NodeHandle nh;
 
-      // robot_ctrl_sub_=nh.subscribe("robot_ctrl",1,&Robot::robot_ctrl_callback,this);
-      rc_msg_pub_ = nh.advertise<simple_robot::sc_rc_msg>("rc_message", 1);
+      robot_ctrl_sub_=nh.subscribe("robot_ctrl",1,&Robot::robot_ctrl_callback,this);
+      rc_msg_pub_ = nh.advertise<robot_msgs::sc_rc_msg>("rc_message", 1);
       chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 100);
-      vision_pub_ = nh.advertise<simple_robot::vision>("vision_data", 1);
-      cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &Robot::navgation_ctrl_callback, this);
+      vision_pub_ = nh.advertise<robot_msgs::vision>("vision_data", 100);
+      cmd_vel_sub_ = nh.subscribe("cmd_vel", 10, &Robot::navgation_ctrl_callback, this);
       current_time = ros::Time::now();
       last_time = ros::Time::now();
 
@@ -271,8 +270,8 @@ namespace robomaster
           current_time = ros::Time::now();
 
           float dt = (current_time - last_time).toSec();
-          chassis_odom_pose.x_pos += (chassis_odom_info_.vx * cos(chassis_odom_info_.vw) - chassis_odom_info_.vy * sin(chassis_odom_info_.vw)) * dt;
-          chassis_odom_pose.y_pos += (chassis_odom_info_.vx * sin(chassis_odom_info_.vw) + chassis_odom_info_.vy * cos(chassis_odom_info_.vw)) * dt;
+          chassis_odom_pose.x_pos += (chassis_odom_info_.vx * cos(chassis_odom_pose.z_pos) - chassis_odom_info_.vy * sin(chassis_odom_pose.z_pos)) * dt;
+          chassis_odom_pose.y_pos += (chassis_odom_info_.vx * sin(chassis_odom_pose.z_pos) + chassis_odom_info_.vy * cos(chassis_odom_pose.z_pos)) * dt;
           chassis_odom_pose.z_pos += chassis_odom_info_.vw * dt;
           //      因为里程计使用麦轮解算得到,无需里程计到base_footprint的tf变换,直接从融合算法ekf发布tf变换即可
           geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(chassis_odom_pose.z_pos);
@@ -329,14 +328,22 @@ namespace robomaster
         break;
         case VISION_ID:
         {
-          // ROS_INFO("VISION info");
+          ROS_INFO("VISION info");
           memcpy(&vision_msg_, frame + index, sizeof(vision_t));
+          vision_pubmsg.header.frame_id = "euler";
+          vision_pubmsg.header.seq++;
+          vision_pubmsg.header.stamp = ros::Time::now();
           vision_pubmsg.id = vision_msg_.id;
+          vision_pubmsg.yaw = vision_msg_.yaw;
           vision_pubmsg.pitch = vision_msg_.pitch;
           vision_pubmsg.roll = vision_msg_.roll;
           vision_pubmsg.shoot = vision_msg_.shoot;
           vision_pubmsg.shoot_sta = vision_msg_.shoot_sta;
-          vision_pubmsg.yaw = vision_msg_.yaw;
+          vision_pubmsg.quaternion.resize(4);//设置自定义消息数组的长度
+          for (int i = 0; i < 4; i++)
+          {
+            vision_pubmsg.quaternion[i] = vision_msg_.quaternion[i];
+          }
           vision_pub_.publish(vision_pubmsg);
         }
         break;
@@ -403,8 +410,8 @@ namespace robomaster
     vision_t vision_msg_;
     nav_msgs::Odometry odom_;
 
-    simple_robot::sc_rc_msg sc_rc_msg;
-    simple_robot::vision vision_pubmsg;
+    robot_msgs::sc_rc_msg sc_rc_msg;
+    robot_msgs::vision vision_pubmsg;
 
     //! Send to VCOM
 
@@ -418,7 +425,7 @@ namespace robomaster
      */
 
     ros::Subscriber message_sub_;
-    // ros::Subscriber robot_ctrl_sub_;
+    ros::Subscriber robot_ctrl_sub_;
     ros::Subscriber cmd_vel_sub_;
     ros::Publisher message_pub_;
     ros::Publisher motor_message_pub_;

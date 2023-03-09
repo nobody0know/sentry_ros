@@ -6,7 +6,7 @@ GlobalPlanner:
   use_dijkstra: false
 
   #是否使用二次逼近法进行计算，false则使用更简单的计算方法
-  use_quadratic: false
+  use_quadratic: true
 
   #如果出于某种原因，您想要global_planner精确地反映navfn的行为，则将其设置为true(并为其他布尔参数使用默认值)                                
   old_navfn_behavior: false
@@ -15,13 +15,14 @@ GlobalPlanner:
   publish_potential: true
 
   #如果为true，创建一条遵循网格边界的路径。false，则使用梯度下降法。
-  use_grid_path: false
+  use_grid_path: true
 
   #是否允许路径穿过代价地图的未知区域
-  allow_unknown:  true  
+  allow_unknown:  false  
 
   #允许的创建的路径规划终点与设置目标点的偏差为多少，单位：m
-  default_tolerance: 0.0
+  # 当设置的目的地被障碍物占据时,需要以该参数为半径寻找到最近的点作为新目的地点.
+  default_tolerance: 1
 
   #是否对通过PointCloud2计算出来的potential area进行可视化
   visualize_potential: false
@@ -34,4 +35,4 @@ GlobalPlanner:
   #What window to use to determine the orientation based on the position derivative specified by the orientation mode
   orientation_window_size: 1
   #用完全占用方格勾勒出全局代价地图。对于“非static_map”(rolling_window)的全局代价地图，需要将其设置为false
-  outline_map: true
+  outline_map: false

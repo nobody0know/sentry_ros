@@ -1,0 +1,2 @@
+int8 game_stage
+int32 command
