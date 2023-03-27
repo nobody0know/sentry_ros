@@ -42,7 +42,7 @@ TebLocalPlannerROS:
   weight_acc_lim_theta: 1  #最大角加速度权重
   weight_kinematics_nh: 1000  #Optimization weight for satisfying the non-holonomic kinematics
   weight_kinematics_forward_drive: 10 #优化过程中，迫使机器人只选择前进方向，差速轮适用
-  weight_kinematics_turning_radius: 1 #优化过程中，车型机器人的最小转弯半径的权重
+  weight_kinematics_turning_radius: 5 #优化过程中，车型机器人的最小转弯半径的权重
   weight_optimaltime: 1 #必须大于0,优化过程中，基于轨迹的时间上的权重
   weight_shortest_path: 0
   weight_obstacle: 30 #优化过程中，和障碍物最小距离的权重
