@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 			}
 
 			scan_pub.publish(scan);
-			//ROS_INFO("New topic %s published, total data points: %d", output_topic.c_str(), num_readings);
+			ROS_INFO("New topic %s published, total data points: %d", output_topic.c_str(), num_readings);
 			scan_vec.clear();
 			scan_vec_ready = 0;
 		}

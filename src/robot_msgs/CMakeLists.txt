@@ -18,6 +18,7 @@ add_message_files(
   control.msg
   sc_rc_msg.msg
   robot_ctrl.msg
+  op_command.msg
 )
 
 generate_messages(

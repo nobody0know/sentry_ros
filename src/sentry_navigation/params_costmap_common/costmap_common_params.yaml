@@ -52,15 +52,15 @@ obstacle_layer:
     #低于多少的障碍物不加入观测范围，单位：m
     min_obstacle_height: 0.0
     #多少范围内障碍物会被加入代价地图，单位：m
-    obstacle_range: 2.5
+    obstacle_range: 5.0
     #多少范围内障碍物会被追踪，单位：m
-    raytrace_range: 3.0
+    raytrace_range: 5.0
 
   #在观测源基础上再次进行设置的参数
   #高于多少的障碍物不加入观测范围，单位：m
   max_obstacle_height:  2.0
   #多少范围内障碍物会被加入代价地图，单位：m
-  obstacle_range: 2.5
+  obstacle_range: 5.0
   # 多少范围内障碍物会被追踪，单位：m
   # 在机器人移动过程中，实时清除代价地图上的障碍物的最大范围，更新可自由移动的空间数据。
   # 假如设置该值为3米，那么就意味着在3米内的障碍物，本来开始时是有的，

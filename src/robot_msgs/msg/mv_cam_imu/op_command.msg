@@ -1,0 +1,4 @@
+uint8 command_info
+float32 goal_point_x
+float32 goal_point_y
+float32 goal_point_z
