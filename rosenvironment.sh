@@ -11,4 +11,5 @@ sudo apt-get install ros-noetic-laser-filters
 sudo apt-get install ros-noetic-teb-local-planner
 sudo apt-get install ros-noetic-dwa-local-planner
 sudo apt-get install ros-noetic-move-slow-and-clear
+sudo apt-get install ros-noetic-tf2-sensor-msgs
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-    <node name="richbeam_lidar" pkg="lakibeam1" type="lakibeam1_scan_node" output="screen">
+    <node name="richbeam_lidar" pkg="lakibeam1" type="lakibeam1_scan_node" >
     <remap from="/richbeam_lidar/scan" to="/scan" />
         <param name="frame_id" type="string" value="laser"/><!--frame_id设置-->
         <param name="output_topic" type="string" value="scan" /><!--topic设置-->
