@@ -6,7 +6,7 @@
     <include file="$(find sentry_navigation)/launch/robot_pose_ekf.launch" />
 
     <!-- 设置需要用于导航的地图 -->
-     <arg name="map_file" default="$(env HOME)/carto_ws/map/2d-1.yaml"/> 
+     <arg name="map_file" default="$(find sentry_navigation)/map/all_map.yaml"/> 
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"></node> 
 
     <!-- 开启用于导航的自适应蒙特卡洛定位amcl -->
@@ -18,5 +18,5 @@
     <arg name="car_mode" value="mini_mec"/> </include>
 
    <!-- MarkerArray功能节点> -->
-  <node name='send_mark' pkg="sentry_navigation" type="send_mark.py" output="screen"></node> 
+  <!-- <node name='send_mark' pkg="sentry_navigation" type="send_mark.py" output="screen"></node>  -->
 </launch>

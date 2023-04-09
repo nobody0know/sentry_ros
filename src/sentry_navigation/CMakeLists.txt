@@ -137,10 +137,12 @@ add_library(amcl_global_estimate
 )
 add_library(amcl_tf_change
   src/amcl_tf_change.cpp
+  src/init_pose_change.cpp
 )
 add_executable(chassis_odom src/chassis_odom.cpp)
 add_executable(deliver src/deliver.cpp)
 add_executable(amcl_tf src/amcl_tf_change.cpp)
+add_executable(init_pose src/init_pose_change.cpp)
 add_executable(mode_control src/nav_mode_control.cpp)
 
 target_link_libraries(chassis_odom
@@ -152,6 +154,10 @@ target_link_libraries(deliver
   amcl_global_estimate
 )
 target_link_libraries(amcl_tf
+  ${catkin_LIBRARIES}
+  amcl_tf_change
+)
+target_link_libraries(init_pose
   ${catkin_LIBRARIES}
   amcl_tf_change
 )

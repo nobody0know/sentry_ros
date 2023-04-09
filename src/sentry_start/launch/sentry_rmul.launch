@@ -1,3 +1,4 @@
 <launch>
     <include file="$(find sentry_navigation)/launch/sentry_navigation_competition.launch" />
+    <node pkg="sentry_navigation" type="amcl_tf" name="init_pose_change"/> 
 </launch>
