@@ -9,6 +9,7 @@
 #include "geometry_msgs/Twist.h"
 #include "std_msgs/String.h"
 #include "std_msgs/Int8.h"
+#include "std_msgs/Int16.h"
 
 #include "robot_msgs/sc_rc_msg.h"
 #include "robot_msgs/robot_ctrl.h"
@@ -18,6 +19,7 @@
 #include <tf/tf.h>
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
+#include <nav_msgs/Path.h>
 
 /**
  * @brief Robot Base Node
@@ -78,16 +80,32 @@ namespace robomaster
       ROS_INFO("Sending robot_ctrl msg");
     }
 
+    void global_plan_callback(const nav_msgs::Path &msg)
+    {
+      nav_info_.start_point_x = msg.poses[0].pose.position.x;
+      nav_info_.start_point_y = msg.poses[0].pose.position.y;
+      for (int i = 0; i < 49; i++)
+      {
+         nav_info_.path_point_x[i] = msg.poses[i].pose.position.x;
+         nav_info_.path_point_y[i] = msg.poses[i].pose.position.y;
+      }
+      uint16_t send_legth = SenderPackSolve((uint8_t *)&nav_info_,sizeof(send_nav_info),
+                                            SEND_NAV_INFO_CMD_ID,send_buff_.get());
+      device_ptr_->Write(send_buff_.get(),send_legth);
+      ROS_INFO("send nav info to C board");
+    }
+
   private:
     bool ROSInit()
     {
       ros::NodeHandle nh;
 
       robot_ctrl_sub_=nh.subscribe("robot_ctrl",1,&Robot::robot_ctrl_callback,this);
+      path_sub_ = nh.subscribe("global_plan",1,&Robot::global_plan_callback,this);
       rc_msg_pub_ = nh.advertise<robot_msgs::sc_rc_msg>("rc_message", 1);
       chassis_odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 100);
       vision_pub_ = nh.advertise<robot_msgs::vision>("vision_data", 100);
-      operator_command_pub_ = nh.advertise<robot_msgs::op_command>("operator_command",100);
+      operator_command_pub_ = nh.advertise<robot_msgs::op_command>("operator_command",10);
       cmd_vel_sub_ = nh.subscribe("cmd_vel", 10, &Robot::navgation_ctrl_callback, this);
       current_time = ros::Time::now();
       last_time = ros::Time::now();
@@ -332,12 +350,14 @@ namespace robomaster
         
         case RECEIVE_GOAL_INFO_CMD_ID:
         {
-          ROS_INFO("GOAL info");
+          // ROS_INFO("GOAL info");
             memcpy(&goal_info_,frame + index,sizeof(receive_goal_info));
             operator_commandmsg.command_info = goal_info_.command_info;
             operator_commandmsg.goal_point_x = goal_info_.goal_point_x;
             operator_commandmsg.goal_point_y = goal_info_.goal_point_y;
             operator_commandmsg.goal_point_z = goal_info_.goal_point_z;
+            operator_commandmsg.game_state = goal_info_.game_state;
+            // ROS_INFO("game_state is %d",goal_info_.game_state);
             operator_command_pub_.publish(operator_commandmsg);
         }
         break;
@@ -385,7 +405,7 @@ namespace robomaster
     std::shared_ptr<SerialDevice> device_ptr_;
     std::unique_ptr<uint8_t[]> recv_buff_;
     std::unique_ptr<uint8_t[]> send_buff_;
-    const unsigned int BUFF_LENGTH = 512;
+    const unsigned int BUFF_LENGTH = 1024;
 
     //! Frame Information
     frame_header_struct_t frame_receive_header_;
@@ -402,11 +422,13 @@ namespace robomaster
     // geometry_msgs::TransformStamped odom_tf_;//! ros chassis odometry tf
     vision_t vision_msg_;
     receive_goal_info goal_info_;
+    send_nav_info nav_info_;
 
     nav_msgs::Odometry odom_;
     robot_msgs::sc_rc_msg sc_rc_msg;
     robot_msgs::vision vision_pubmsg;
     robot_msgs::op_command operator_commandmsg;
+    std_msgs::Int16 outpost_state;
 
     //! Send to VCOM
 
@@ -422,6 +444,7 @@ namespace robomaster
     ros::Subscriber message_sub_;
     ros::Subscriber robot_ctrl_sub_;
     ros::Subscriber cmd_vel_sub_;
+    ros::Subscriber path_sub_;
     ros::Publisher message_pub_;
     ros::Publisher operator_command_pub_;
     ros::Publisher motor_message_pub_;

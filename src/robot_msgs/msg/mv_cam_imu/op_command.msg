@@ -1,4 +1,5 @@
 uint8 command_info
+uint8 game_state
 float32 goal_point_x
 float32 goal_point_y
 float32 goal_point_z

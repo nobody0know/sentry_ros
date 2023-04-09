@@ -20,7 +20,7 @@ static_layer:
   track_unknown_space: true
   #如果设置为true，静态层代价地图只有未知、自由和完全占用三种情况
   #如果设置为false，静态层代价地图可以有不同的占用程度
-  trinary_costmap: true
+  trinary_costmap: false
 
 
 #设置障碍层参数

@@ -22,7 +22,7 @@ GlobalPlanner:
 
   #允许的创建的路径规划终点与设置目标点的偏差为多少，单位：m
   # 当设置的目的地被障碍物占据时,需要以该参数为半径寻找到最近的点作为新目的地点.
-  default_tolerance: 1
+  default_tolerance: 3
 
   #是否对通过PointCloud2计算出来的potential area进行可视化
   visualize_potential: false
