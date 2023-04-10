@@ -8,7 +8,7 @@ from geometry_msgs.msg import PointStamped
 import tf2_ros
 import tf2_geometry_msgs
 import numpy as np 
-import move_base_msgs
+import move_base_msgs.msg as move_base_msgs
 from tf.transformations import quaternion_from_euler,euler_from_quaternion
 from geometry_msgs.msg import Quaternion
 import actionlib

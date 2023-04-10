@@ -4,7 +4,7 @@ scan_filter_chain:
   params:
     box_frame: laser
     min_x: -0.8
-    max_x: 0.4
+    max_x: 0.6
     min_y: -0.65
     max_y: 0.65
     min_z: -0.2

@@ -7,7 +7,7 @@
 #include "geometry_msgs/PoseWithCovarianceStamped.h"
 #include "math.h"
 #include "robot_msgs/vision.h"
-int robot_id = 107; // 7 is red 107 is blue
+int robot_id = 7; // 7 is red 107 is blue
 void robot_id_callback(const robot_msgs::vision::ConstPtr &msg)
 {
     ROS_INFO("get id = %d", robot_id);

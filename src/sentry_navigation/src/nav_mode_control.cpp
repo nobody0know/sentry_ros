@@ -47,21 +47,9 @@ int main(int argc, char** argv){
                      goal[4 -goal_number].target_pose.header.frame_id = "map";
                      goal[4 -goal_number].target_pose.header.stamp = ros::Time::now();
                      ac.sendGoal(goal[4 -goal_number]);
-                     ROS_INFO("Send NO. %d Goal !!!", 4-goal_number );
+                     ROS_INFO("Send NO. %d Goal !!!", 1-goal_number );
                 break;
             case 1:
-                     goal[4 -goal_number].target_pose.header.frame_id = "map";
-                     goal[4 -goal_number].target_pose.header.stamp = ros::Time::now();
-                     ac.sendGoal(goal[4 -goal_number]);
-                     ROS_INFO("Send NO. %d Goal !!!", 4-goal_number );
-                break;
-            case 2:
-                     goal[4 -goal_number].target_pose.header.frame_id = "map";
-                     goal[4 -goal_number].target_pose.header.stamp = ros::Time::now();
-                     ac.sendGoal(goal[4 -goal_number]);
-                     ROS_INFO("Send NO. %d Goal !!!", 4-goal_number );
-                break;
-            case 3:
                      goal[4 -goal_number].target_pose.header.frame_id = "map";
                      goal[4 -goal_number].target_pose.header.stamp = ros::Time::now();
                      ac.sendGoal(goal[4 -goal_number]);
@@ -74,6 +62,10 @@ int main(int argc, char** argv){
         if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
             ROS_INFO("The NO. %d Goal achieved success !!!", 4-goal_number );
             goal_number -- ;
+            if(goal_number == -1)
+            {
+                goal_number = 1;
+            }
         }else{ROS_WARN("The NO. %d Goal Planning Failed for some reason",4-goal_number); }
     }
   return 0;}

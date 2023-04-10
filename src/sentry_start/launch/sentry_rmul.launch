@@ -1,4 +1,5 @@
 <launch>
     <include file="$(find sentry_navigation)/launch/sentry_navigation_competition.launch" />
     <node pkg="sentry_navigation" type="init_pose" name="init_pose_change" output ="screen" /> 
+    <node pkg="behaviour" name="behavior_tree" type="trees.py" output="screen" />
 </launch>
