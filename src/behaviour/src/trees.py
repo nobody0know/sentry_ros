@@ -8,7 +8,7 @@ from actionlib_msgs.msg import GoalStatus
 import rospy
 import sys
 from math import pi
-from travel import action_behavior,check_place,goto_place
+from travel import action_behavior,check_placeRed,goto_place,check_placeBlue,defend
 from composites import Stop_behaviour,pursue,detect
 import move_base_msgs.msg as move_base_msgs
 import std_msgs.msg as std_msgs
@@ -26,28 +26,39 @@ import math
 from nav_msgs.msg import Odometry
 
 def create_root():
-    #前哨站
-    # check_place_=check_place(goal_places=[[12.560, -12.010, -0.906],[21.0, -6.75, -0]])
-    check_place_=check_place(goal_places=[[4.452, 0.810, -0],[1.5, -0.44, -0]])
+    #红点
+    checlkPlaceRed=check_placeRed(goal_places=[[12.560, -12.010, -0.906],[21.0, -6.75, -0]])
+    #蓝点
+    checlkPlaceBlue=check_placeBlue(goal_places=[[12.560, -12.010, -0.906],[21.0, -6.75, -0]])
+    
+    #勾吧巡逻点，如IsDefend_=defend("IsDefend",redGoal=[[1,1,1],[2,2,2]],blueGoal=[[3,3,3],[4,4,4]])
+    IsDefend_=defend("IsDefend",redGoal=[[],[]],blueGoal=[[],[]])
+    
+    check_place_=py_trees.composities.Selector("check_place")
+    
     goto_place_=goto_place()
     root=py_trees.composites.Sequence("root")
+    root=py_trees.composites.Parallel("root",policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
     travel=py_trees.composites.Parallel("travel",policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
     stop=Stop_behaviour()
     detect_=detect()
     pursue_=pursue()
-    
+
     check_all_place=py_trees.behaviours.Running(name='check_all_place')
+    lang=py_trees.composites.Sequence("lang")
     start_travel=py_trees.composites.Sequence("start_travel")
     start_travel.add_children([check_place_,goto_place_])
+    check_place_.add_children([checlkPlaceRed,checlkPlaceBlue])
     #travel behaviour never will success
     travel.add_children([start_travel,check_all_place])
-
+    
     travel_and_detect=py_trees.composites.Parallel("travel_and_detect",py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
+    
     ## you had better put the travel in a parallel behaviour
     travel_and_detect.add_children([travel,detect_])
-
-    root.add_children([travel_and_detect,pursue_,stop])
     
+    lang.add_children([travel_and_detect,pursue_,stop])
+    root.add_children([IsDefend_,lang])
     # travel.add_children([aim])
 
     return root
