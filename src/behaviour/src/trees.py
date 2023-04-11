@@ -27,7 +27,8 @@ from nav_msgs.msg import Odometry
 
 def create_root():
     #前哨站
-    check_place_=check_place(goal_places=[[12.560, -12.010, -0.906],[21.0, -6.75, -0]])
+    # check_place_=check_place(goal_places=[[12.560, -12.010, -0.906],[21.0, -6.75, -0]])
+    check_place_=check_place(goal_places=[[4.452, 0.810, -0],[1.5, -0.44, -0]])
     goto_place_=goto_place()
     root=py_trees.composites.Sequence("root")
     travel=py_trees.composites.Parallel("travel",policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
