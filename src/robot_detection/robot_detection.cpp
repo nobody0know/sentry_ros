@@ -156,6 +156,14 @@ void callback(const sensor_msgs::ImageConstPtr & src_msg, const robot_msgs::visi
     robot_msgs::vision vision_data;
     vision_data = *imu_msg;
     int enemy_color = vision_data.id;  // TODO: RED 7-me; BLUE 107
+    if(enemy_color == 7)
+    {
+        enemy_color = robot_detection::BLUE;
+    }
+    else if(enemy_color == 107)
+    {
+        enemy_color =robot_detection::RED;
+    }
     float roll = vision_data.roll;
     float pitch = vision_data.pitch;
     float yaw = vision_data.yaw;
@@ -181,7 +189,7 @@ void callback(const sensor_msgs::ImageConstPtr & src_msg, const robot_msgs::visi
     // ROS_INFO("mode         is  %x  \n", mode);
 
     // TODO: enemy color set 1-RED 2-BLUE
-    enemy_color = 2; 
+    // enemy_color = 2; 
     // detecting
     Targets = Detect.autoAim(src, enemy_color);
     if (!Targets.empty())
@@ -226,6 +234,11 @@ void callback(const sensor_msgs::ImageConstPtr & src_msg, const robot_msgs::visi
             vision_send_data.target_lock = 0x31;
             // transform.setOrigin(tf::Vector3(0,0,0));
         }
+        if(Track.enemy_armor.world_position.norm() > 6)
+        {
+            vision_send_data.fire_command = 0x32;
+            vision_send_data.target_lock = 0x32;
+        }
         vision_send_data.aim_id = Track.tracking_id;
         vision_send_data.pitch = Track.pitch;
         vision_send_data.yaw = Track.yaw;
@@ -259,7 +272,7 @@ void callback(const sensor_msgs::ImageConstPtr & src_msg, const robot_msgs::visi
     aim_point.point.x = Track.enemy_armor.camera_position[0];
     aim_point.point.y = Track.enemy_armor.camera_position[1];
     aim_point.point.z = Track.enemy_armor.camera_position[2];
-    aim_point_pub_.publish(aim_point);
+    // aim_point_pub_.publish(aim_point);
 
     // show track state on img's ru
     switch (Track.tracker_state)

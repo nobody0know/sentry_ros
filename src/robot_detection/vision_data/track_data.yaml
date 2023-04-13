@@ -1,7 +1,7 @@
 %YAML:1.0
 ---
 find_threshold: 20
-lost_threshold: 50
+lost_threshold: 20
 new_old_threshold: 0.1
 
 switch_enemy_threshold: 50

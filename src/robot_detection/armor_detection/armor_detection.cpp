@@ -197,7 +197,7 @@ namespace robot_detection {
 
                     // 颜色不符合电控发的就不放入
                     // 传入的电控颜色是color，文件读取的颜色是enemy_color
-                    if(light.lightColor == 1)
+                    if(light.lightColor == color)
                     {
                         candidateLights.emplace_back(light);
                     }
@@ -487,6 +487,15 @@ namespace robot_detection {
         if(!candidateLights.empty())
             candidateLights.clear();
 
+        if(color == RED)
+        {
+            binThresh = 40;
+        }
+        else
+        {
+            binThresh = 120;
+        }
+
         //do autoaim task
         setImage(src);
         findLights(color);
@@ -570,7 +579,7 @@ namespace robot_detection {
         const int warp_height = 30;
         const int warp_width = armor.type == SMALL ? small_armor_width : large_armor_width;
         // Number ROI size
-        const cv::Size roi_size(20, 30);
+        const cv::Size roi_size(22, 30);
 
         const int top_light_y = (warp_height - light_length) / 2;
         const int bottom_light_y = top_light_y + light_length;

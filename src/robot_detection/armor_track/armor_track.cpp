@@ -2,7 +2,7 @@
 // #include <opencv2/calib3d.hpp>
 // #include <opencv2/core/eigen.hpp>
 
-#define ANTI_SPIN
+// #define ANTI_SPIN
 
 namespace robot_detection {
 
@@ -185,7 +185,7 @@ namespace robot_detection {
                 {
                     double dis_tmp = (enemy_armor.world_position - armor.world_position).norm();
 //                    std::cout << "[delta_dist2]: " << dis_tmp << std::endl;
-                    if (armor.id == tracking_id && dis_tmp < )
+                    if (armor.id == tracking_id && dis_tmp < new_old_threshold)
                     {
                         matched = true;
                         //TODO:封装
@@ -489,7 +489,7 @@ namespace robot_detection {
                         position_speed << armor.world_position, predicted_enemy.tail(3);
                         KF.setPosAndSpeed(armor.world_position, predicted_enemy.tail(3));
 
-                        // Singer.setXpos({armor.world_position[0],armor.world_position[1]});
+                        Singer.setXpos({armor.world_position[0],armor.world_position[1]});
 
                         predicted_enemy = position_speed;
                         matched_armor = armor;
@@ -688,9 +688,9 @@ namespace robot_detection {
                 std::cout<<"5"<<std::endl;
             }
             
-            // Eigen::Vector3d rpy = AS.getAngle(enemy_armor.world_position);
-            // pitch = rpy[1];
-            // yaw   = rpy[2];
+            Eigen::Vector3d rpy = AS.getAngle(enemy_armor.world_position);
+            pitch = rpy[1];
+            yaw   = rpy[2];
 
             return true;
         }

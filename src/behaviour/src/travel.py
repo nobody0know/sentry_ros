@@ -80,7 +80,8 @@ class check_placeRed(py_trees.behaviour.Behaviour):
             places_inMB.append([False,self.creat_goal(goal_place[0],goal_place[1],goal_place[2])])
         self.blackboard.set("places_inMB",places_inMB)       
     def game_id_callback(self,msg):
-        self.game_id=ord(msg.id)
+        self.game_id=int(msg.id)
+    
     def creat_goal(self,x,y,yaw):
         goal_pose=move_base_msgs.MoveBaseGoal()
         # 将上面的Euler angles转换成Quaternion的格式
@@ -94,30 +95,35 @@ class check_placeRed(py_trees.behaviour.Behaviour):
         return goal_pose
     def initialise(self):
         self.index=0
-        self.game_id
+        self.game_id=None
         rospy.Subscriber("vision_data",vision,self.game_id_callback)
     #     print("init")
     def update(self):
+
         if self.game_id==107:
-            py_trees.Status.FAILURE
-        now_place_inMB=self.blackboard.get("places_inMB")
-        if now_place_inMB[self.index][0]==False:
-            self.blackboard.set("next_goal",now_place_inMB[self.index][1])
-            now_place_inMB[self.index][0]=True
-            self.blackboard.set("places_inMB",now_place_inMB)
-            self.blackboard.set("places_index",self.index) 
-            return py_trees.Status.SUCCESS
-        else:
-            
-            if self.index<len(now_place_inMB)-1:
-                self.index+=1
-                return py_trees.Status.RUNNING
-            else :
-                self.index=0
-                for i in range(0,len(now_place_inMB)):
-                    now_place_inMB[i][0]=False
-                self.blackboard.set("places_inMB",now_place_inMB) 
-                return py_trees.Status.RUNNING
+            return py_trees.Status.FAILURE
+        elif self.game_id==None:
+            return py_trees.Status.RUNNING
+        elif self.game_id==7:
+            now_place_inMB=self.blackboard.get("places_inMB")
+    
+            if now_place_inMB[self.index][0]==False:
+                self.blackboard.set("next_goal",now_place_inMB[self.index][1])
+                now_place_inMB[self.index][0]=True
+                self.blackboard.set("places_inMB",now_place_inMB)
+                self.blackboard.set("places_index",self.index) 
+                return py_trees.Status.SUCCESS
+            else:
+                
+                if self.index<len(now_place_inMB)-1:
+                    self.index+=1
+                    return py_trees.Status.RUNNING
+                else :
+                    self.index=0
+                    for i in range(0,len(now_place_inMB)):
+                        now_place_inMB[i][0]=False
+                    self.blackboard.set("places_inMB",now_place_inMB) 
+                    return py_trees.Status.RUNNING
 class check_placeBlue(py_trees.behaviour.Behaviour):
     def __init__(self,name="check_palce",goal_places=[]):
         super().__init__(name)
@@ -126,8 +132,7 @@ class check_placeBlue(py_trees.behaviour.Behaviour):
         for goal_place in goal_places:
             places_inMB.append([False,self.creat_goal(goal_place[0],goal_place[1],goal_place[2])])
         self.blackboard.set("places_inMB_blue",places_inMB)       
-    def game_id_callback(self,msg):
-        self.game_id=ord(msg.id)
+    
     def creat_goal(self,x,y,yaw):
         goal_pose=move_base_msgs.MoveBaseGoal()
         # 将上面的Euler angles转换成Quaternion的格式
@@ -141,8 +146,7 @@ class check_placeBlue(py_trees.behaviour.Behaviour):
         return goal_pose
     def initialise(self):
         self.index=0
-        self.game_id
-        rospy.Subscriber("vision_data",vision,self.game_id_callback)
+    
     #     print("init")
     def update(self):
         now_place_inMB=self.blackboard.get("places_inMB_blue")
@@ -173,6 +177,57 @@ class goto_place(action_behavior):
         self.action_goal=blackboard.get("next_goal")
         super().initialise()
 
+class start_game(py_trees.behaviour.Behaviour):
+    def __init__(self,name="startGame") -> None:
+        super().__init__(name)
+        
+        
+    def gameStateCallbacl(self,msg):
+        self.gameState=msg.game_state
+        
+    def game_id_callback(self,msg):
+        self.game_id=msg.id
+    
+    def initialise(self):
+        self.gameState=None
+        self.palceSwitch=1
+        self.sendState=False
+        
+        rospy.Subscriber("operator_command",op_command,self.gameStateCallbacl)
+        rospy.Subscriber("vision_data",vision,self.game_id_callback)
+  
+    def update(self):
+        if self.gameState==None:
+            return py_trees.Status.RUNNING
+        elif self.gameState!=0:
+            return py_trees.Status.SUCCESS
+        return py_trees.Status.RUNNING
+   
+
+class isDefend(py_trees.behaviour.Behaviour):
+    def __init__(self,name="defend") -> None:
+        super().__init__(name)
+        
+        
+    def gameStateCallbacl(self,msg):
+        self.gameState=msg.game_state
+        
+    def game_id_callback(self,msg):
+        self.game_id=msg.id
+    
+    def initialise(self):
+        self.gameState=None
+        self.palceSwitch=1
+        self.sendState=False
+        
+        rospy.Subscriber("operator_command",op_command,self.gameStateCallbacl)
+        rospy.Subscriber("vision_data",vision,self.game_id_callback)
+  
+    def update(self):
+        if self.gameState==2:
+            return py_trees.Status.SUCCESS
+        return py_trees.Status.RUNNING
+      
 class defend(py_trees.behaviour.Behaviour):
     def __init__(self,name="defend",redGoal=[[],[]],blueGoal=[[],[]]) -> None:
         self.redGoal=redGoal
@@ -180,10 +235,10 @@ class defend(py_trees.behaviour.Behaviour):
         super().__init__(name)
         
     def gameStateCallbacl(self,msg):
-        self.gameState=ord(msg.game_state)
+        self.gameState=msg.game_state
         
     def game_id_callback(self,msg):
-        self.game_id=ord(msg.id)
+        self.game_id=msg.id
     def setup(self, timeout):
         self.logger.debug("%s.setup()" % self.__class__.__name__)
         self.action_client=actionlib.SimpleActionClient("/move_base",move_base_msgs.MoveBaseAction)
@@ -193,11 +248,11 @@ class defend(py_trees.behaviour.Behaviour):
             return False
         return True
     def initialise(self):
-        self.gameState=1
+        self.gameState=None
         self.palceSwitch=1
         self.sendState=False
-        
-        rospy.subscriber("operator_command",op_command,self.gameStateCallbacl)
+        self.game_id=None
+        rospy.Subscriber("operator_command",op_command,self.gameStateCallbacl)
         rospy.Subscriber("vision_data",vision,self.game_id_callback)
     def creat_goal(self,x,y,yaw):
         goal_pose=move_base_msgs.MoveBaseGoal()
@@ -211,9 +266,9 @@ class defend(py_trees.behaviour.Behaviour):
         goal_pose.target_pose.pose.orientation=q
         return goal_pose
     def update(self):
-        if self.gameState==1:
-            return rospy.Status.SUCCESS
-        if self.game_id==7:
+        if self.game_id==None:
+            return py_trees.Status.RUNNING
+        elif self.game_id==7:
             #red
             if self.palceSwitch==1 and (not self.sendState) :
                 self.action_client.send_goal(self.creat_goal(self.redGoal[0][0], self.redGoal[0][1],self.redGoal[0][2]))
@@ -238,5 +293,4 @@ class defend(py_trees.behaviour.Behaviour):
         if result:
             self.sendState=False
         return py_trees.Status.RUNNING
-        
-            
+  
