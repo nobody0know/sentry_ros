@@ -1,0 +1,41 @@
+<launch>
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <!-- arg name="paused" default="true"/ -->
+  <arg name="use_sim_time" default="true"/> 
+  <arg name="gui" default="true"/><!-- 此处开启或关闭gazebo gui界面-->
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find robot_des)/config/rmus_map.world"/>
+    <remap from="tf" to="gazebo_tf"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+  </include>
+
+  <rosparam file="$(find robot_des)/config/joint_names_robot_des.yaml" command="load"/> 
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <arg name="model" default="$(find robot_des)/urdf/robot_des.xacro" />
+ 
+  <param name="robot_description" command="$(find xacro)/xacro  --inorder $(arg model)" />
+ 
+  <!-- Run a python script to send a service call the gazebo_ros to spawn a URDF robot -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model robot -param robot_description "/> 
+ 
+  <!-- <param name="publisher_frequency" type="double" value="100"/> -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+      <param name="publisher_frequency" type="double" value="50"/>
+  </node>
+
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter" output="screen">
+    <rosparam command="load" file="$(find robot_des)/config/my_laser_config.yaml" />
+    <remap from="/scan" to="/scan_raw" />
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+      <param name="publisher_frequency" type="double" value="50"/>
+  </node>
+
+    
+</launch>

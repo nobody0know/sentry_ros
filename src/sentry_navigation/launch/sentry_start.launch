@@ -7,9 +7,9 @@
 
     <include file="$(find fdilink_ahrs)/launch/ahrs_data.launch"/>
 
-    <include file="$(find lakibeam1)/launch/lakibeam1_scan.launch"/>
+    <include file="$(find lakibeam1)/launch/lakibeam1_scan.launch"/> 
 
-    <include file="$(find sentry_navigation)/launch/laser_filter.launch"/>
+    <include file="$(find sentry_navigation)/launch/laser_filter.launch"/> 
 
       <!-- 发布用于建图、导航的TF关系与小车外形可视化 -->
     <include file="$(find sentry_navigation)/launch/robot_model_visualization.launch"/>

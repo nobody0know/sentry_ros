@@ -5,6 +5,8 @@
   
   <!-- 用于robot_state_publisher节点-->
   <node pkg="tf" type="static_transform_publisher" name="base_to_link" args="0 0 0 0 0 0 base_footprint base_link 100" />
+  <!-- 用于将车变换到地图原点的系下 -->
+  <!--<node pkg="tf" type="static_transform_publisher" name="map_to_base" args="10.5026 8.4193 0 0 0 0 map base_footprint 100" /> -->
   
   <!--坐标变换，需要实测 -->
 

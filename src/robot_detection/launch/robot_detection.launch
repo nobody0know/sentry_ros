@@ -1,0 +1,13 @@
+<launch>
+  
+
+  <node 
+    name="mv_camera_sub" 
+    pkg="robot_detection" 
+    type="robot_detection" 
+    output="screen"
+    respawn="true"
+    > 
+  </node>
+  
+</launch>

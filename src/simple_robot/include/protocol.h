@@ -40,9 +40,9 @@ typedef enum
 {
   CHASSIS_ODOM_CMD_ID = 0x0101,
   CHASSIS_CTRL_CMD_ID = 0x0102,
-  RGB_ID=0x0103,
-  RC_ID=0x0104,
-  VISION_ID=0x0105
+  SEND_NAV_INFO_CMD_ID = 0x0103,
+  RECEIVE_GOAL_INFO_CMD_ID = 0x0104,
+  VISION_ID=0x0105,
 } referee_data_cmd_id_type;
 
 typedef  struct
@@ -80,12 +80,28 @@ typedef struct
 
 typedef struct
 {
+    uint8_t command_info=0;//key board info
+    uint8_t game_state=0;
+    float goal_point_x=0;// m
+    float goal_point_y=0;// m
+    float goal_point_z=0;//m
+} receive_goal_info;
 
-  uint16_t R;
-  uint16_t G;
-  uint16_t B;
+typedef struct
+{
+    uint8_t purpose;
+    uint8_t result;
+    int16_t start_point_x;//dm
+    int16_t start_point_y;//dm
+    int8_t path_point_x[49];//dm
+    int8_t path_point_y[49];//dm
+} send_nav_info;
 
-} RGB_info_t;
+typedef struct
+{
+   int16_t outpost_state;
+}receive_referee_info;
+
 
 typedef struct
 {

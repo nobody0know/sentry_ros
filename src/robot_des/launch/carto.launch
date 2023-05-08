@@ -1,0 +1,5 @@
+<launch>
+<include file="$(find carto_navigation)/launch/navigation.launch">
+        <arg name="open_rviz" value="true" />
+</include>
+</launch>
